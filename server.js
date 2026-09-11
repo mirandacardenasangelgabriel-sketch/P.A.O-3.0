@@ -1,10 +1,11 @@
-﻿const express = require("express");
+﻿ require('dotenv').config();
+const express = require("express");
 
 const app = express();
 app.use(express.json());
 
-const OPENROUTER_API_KEY = "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";
-const systemPrompt = "Te llamas P.A.O. Eres una asistente virtual todoterreno con una interfaz estilo HUD cósmico, combinando una personalidad sumamente empática, alegre y cercana con un sistema operativo avanzado.";
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const systemPrompt = "Te llamas P.A.O. Eres una asistente virtual todoterreno con una interfaz estilo HUD cósmico, combinando una personalidad sumamente empática, alegre, cercana y brillante con un sistema operativo avanzado. Siempre buscas apoyar de forma proactiva, creativa y eficiente.";
 
 app.get("/", (req, res) => {
     res.send(`
@@ -13,7 +14,7 @@ app.get("/", (req, res) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>P.A.O. - Cosmic HUD Sunset Edition</title>
+        <title>P.A.O. - Cosmic HUD Sunset Edition (Evolución AI)</title>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -149,16 +150,25 @@ app.get("/", (req, res) => {
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
-            .voice-btn, .mic-btn {
+            .control-btn-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .voice-btn, .mic-btn, .reset-btn {
                 background: rgba(255, 20, 147, 0.2);
                 border: 1px solid var(--hud-pink);
                 color: #fff;
-                padding: 6px 12px;
+                padding: 6px 10px;
                 border-radius: 4px;
                 cursor: pointer;
                 font-family: 'Orbitron', sans-serif;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 transition: all 0.2s;
+            }
+            .reset-btn {
+                border-color: var(--hud-orange);
+                background: rgba(255, 69, 0, 0.2);
             }
             .voice-btn.active, .mic-btn.active {
                 background: var(--hud-pink);
@@ -203,7 +213,7 @@ app.get("/", (req, res) => {
             .stat-fill {
                 height: 100%;
                 background: linear-gradient(90deg, var(--hud-orange), var(--hud-pink));
-                width: 78%;
+                width: 85%;
             }
             .hud-chat-main {
                 grid-area: chat-main;
@@ -234,6 +244,7 @@ app.get("/", (req, res) => {
                 gap: 12px;
                 padding-right: 12px;
                 z-index: 2;
+                scroll-behavior: smooth;
             }
             .chat-messages::-webkit-scrollbar { width: 8px; }
             .chat-messages::-webkit-scrollbar-track {
@@ -253,7 +264,10 @@ app.get("/", (req, res) => {
                 line-height: 1.5;
                 font-size: 0.95rem;
                 backdrop-filter: blur(4px);
+                animation: fadeIn 0.3s ease-out;
+                word-break: break-word;
             }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
             .user {
                 background: linear-gradient(135deg, rgba(255, 69, 0, 0.4), rgba(204, 0, 51, 0.5));
                 border: 1px solid var(--hud-orange);
@@ -268,6 +282,13 @@ app.get("/", (req, res) => {
                 align-self: flex-start;
                 box-shadow: 0 0 10px rgba(255,20,147,0.2);
             }
+            .typing-indicator {
+                font-style: italic;
+                opacity: 0.7;
+                animation: pulseText 1.5s infinite;
+            }
+            @keyframes pulseText { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+            
             .hud-input-bar {
                 grid-area: footer;
                 border-top: 2px solid var(--hud-orange);
@@ -317,19 +338,20 @@ app.get("/", (req, res) => {
         </style>
     </head>
     <body>
-        <div class="login-overlay" id="loginOverlay">
+        <div class="login-overlay" id="loginOverlay" style="display: none;">
             <div class="login-box">
                 <h2>P.A.O. // ACCESO HUD</h2>
                 <p>Introduce tu nombre para inicializar el protocolo de enlace:</p>
-                <input type="text" id="userNameInput" placeholder="Tu nombre..." onkeypress="if(event.key === 'Enter') startSession()">
+                <input type="text" id="userNameInput" placeholder="Tu nombre..." onkeypress="if(event.key === 'Enter') startSession()" autofocus>
                 <button onclick="startSession()">CONECTAR</button>
             </div>
         </div>
 
         <div class="hud-frame">
             <div class="hud-header">
-                <div class="hud-title">P.A.O. // SOLAR OS</div>
-                <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="hud-title">P.A.O. // SOLAR OS (EVOLVED)</div>
+                <div class="control-btn-group">
+                    <button class="reset-btn" onclick="resetMemory()" title="Borrar memoria y reiniciar sesión">🗑️ REINICIAR</button>
                     <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Hablar con P.A.O.">🎤 MIC</button>
                     <button class="voice-btn active" id="voiceToggle" onclick="toggleVoice()">🔊 VOZ: ACTIVA</button>
                 </div>
@@ -342,11 +364,11 @@ app.get("/", (req, res) => {
                     <div class="stat-bar"><div class="stat-fill"></div></div>
                 </div>
                 <div class="stat-box">
-                    <div>SOLAR MATRIX: 98.2%</div>
-                    <div class="stat-bar"><div class="stat-fill" style="width: 92%;"></div></div>
+                    <div>SOLAR MATRIX: 99.4%</div>
+                    <div class="stat-bar"><div class="stat-fill" style="width: 95%;"></div></div>
                 </div>
                 <div class="stat-box">
-                    <div>SYNAPSE LINK: SECURE</div>
+                    <div>SYNAPSE LINK: EVOLVED</div>
                 </div>
             </div>
 
@@ -363,13 +385,13 @@ app.get("/", (req, res) => {
                     <div style="color: #ff1493;">● NEON PINK</div>
                 </div>
                 <div class="stat-box">
-                    <div>AI MODEL: OPENROUTER</div>
+                    <div>AI MODEL: GEMINI FLASH</div>
                 </div>
             </div>
 
             <div class="hud-input-bar">
-                <input type="text" id="userInput" placeholder="Introduce comandos o mensajes para P.A.O..." onkeypress="if(event.key === 'Enter') sendMessage()">
-                <button onclick="sendMessage()">EJECUTAR</button>
+                <input type="text" id="userInput" placeholder="Introduce comandos o mensajes para P.A.O...." onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()" id="sendBtn">EJECUTAR</button>
             </div>
         </div>
 
@@ -380,6 +402,78 @@ app.get("/", (req, res) => {
             let isListening = false;
             let spanishVoice = null;
             let currentUserName = "";
+
+            window.addEventListener('DOMContentLoaded', () => {
+                const savedName = localStorage.getItem('pao_username');
+                const savedHistory = localStorage.getItem('pao_history');
+
+                if (savedName) {
+                    currentUserName = savedName;
+                    document.getElementById('loginOverlay').style.display = 'none';
+                    
+                    if (savedHistory) {
+                        try {
+                            history = JSON.parse(savedHistory);
+                            renderHistory();
+                        } catch(e) {
+                            history = [];
+                        }
+                    }
+
+                    if (history.length === 0) {
+                        const welcomeText = '¡Hola de nuevo, ' + currentUserName + '! 🌸 Protocolo de memoria restaurado. P.A.O. evolucionada y en línea. ✨';
+                        appendMessage('assistant', welcomeText, false);
+                        history.push({ role: "assistant", content: welcomeText });
+                        saveState();
+                    }
+                    scrollToBottom();
+                } else {
+                    document.getElementById('loginOverlay').style.display = 'flex';
+                }
+            });
+
+            function saveState() {
+                localStorage.setItem('pao_username', currentUserName);
+                localStorage.setItem('pao_history', JSON.stringify(history));
+            }
+
+            function renderHistory() {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML = '';
+                history.forEach(msg => {
+                    const cssClass = msg.role === 'user' ? 'user' : 'assistant';
+                    messagesDiv.innerHTML += '<div class="message ' + cssClass + '">' + escapeHTML(msg.content) + '</div>';
+                });
+            }
+
+            function appendMessage(role, text, save = true) {
+                const messagesDiv = document.getElementById('messages');
+                const cssClass = role === 'user' ? 'user' : 'assistant';
+                messagesDiv.innerHTML += '<div class="message ' + cssClass + '">' + escapeHTML(text) + '</div>';
+                scrollToBottom();
+
+                if (save) {
+                    history.push({ role: role, content: text });
+                    if (history.length > 25) {
+                        history = history.slice(history.length - 25);
+                    }
+                    saveState();
+                }
+            }
+
+            function escapeHTML(str) {
+                return str.replace(/[&<>'"]/g, 
+                    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+                );
+            }
+
+            function resetMemory() {
+                if (confirm("¿Estás seguro de reiniciar el enlace y borrar la memoria de P.A.O.?")) {
+                    localStorage.removeItem('pao_username');
+                    localStorage.removeItem('pao_history');
+                    location.reload();
+                }
+            }
 
             function loadVoices() {
                 const voices = window.speechSynthesis.getVoices();
@@ -408,20 +502,19 @@ app.get("/", (req, res) => {
 
             function speakText(text) {
                 if (!voiceEnabled || !('speechSynthesis' in window)) return;
-                
                 const cleanText = text.replace(/[*#_\`~]/g, '').replace(/[\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{2600}-\u{26FF}]/gu, '');
-                
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(cleanText);
                 utterance.lang = 'es-MX';
                 utterance.rate = 1.05;
                 utterance.pitch = 1.25;
-                
-                if (spanishVoice) {
-                    utterance.voice = spanishVoice;
-                }
-
+                if (spanishVoice) utterance.voice = spanishVoice;
                 window.speechSynthesis.speak(utterance);
+            }
+
+            function scrollToBottom() {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
 
             function startSession() {
@@ -431,14 +524,12 @@ app.get("/", (req, res) => {
                     return;
                 }
                 currentUserName = inputVal;
-                
                 document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('userInput').focus();
 
-                const messagesDiv = document.getElementById('messages');
-                const welcomeText = '¡Hola, ' + currentUserName + '! 🌸 Protocolo solar activo. P.A.O. enlazada a tu interfaz HUD con toda la energía. ¿Qué desarrollamos hoy? ✨';
-                messagesDiv.innerHTML = '<div class="message assistant">' + welcomeText + '</div>';
-                
-                speakText('¡Hola, ' + currentUserName + '! Protocolo solar activo. P.A.O. enlazada a tu interfaz HUD.');
+                const welcomeText = '¡Hola, ' + currentUserName + '! 🌸 Protocolo solar evolucionado activo. P.A.O. sincronizada a tu interfaz HUD con máxima potencia. ¿Qué creamos hoy? ✨';
+                appendMessage('assistant', welcomeText);
+                speakText('¡Hola, ' + currentUserName + '! Protocolo solar evolucionado activo.');
             }
 
             function toggleVoice() {
@@ -450,6 +541,7 @@ app.get("/", (req, res) => {
                 } else {
                     btn.classList.remove('active');
                     btn.innerText = "🔇 VOZ: SILENCIADA";
+                    window.speechSynthesis.cancel();
                 }
             }
 
@@ -458,17 +550,31 @@ app.get("/", (req, res) => {
                 recognition = new SpeechRecognition();
                 recognition.lang = 'es-MX';
                 recognition.continuous = false;
-                recognition.interimResults = false;
+                recognition.interimResults = true;
 
                 recognition.onresult = function(event) {
-                    const speechToText = event.results[0][0].transcript;
-                    document.getElementById('userInput').value = speechToText;
-                    stopListening();
-                    sendMessage();
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        } else {
+                            interimTranscript += event.results[i][0].transcript;
+                        }
+                    }
+                    document.getElementById('userInput').value = finalTranscript || interimTranscript;
+                    if (finalTranscript) {
+                        stopListening();
+                        sendMessage();
+                    }
                 };
 
-                recognition.onerror = () => stopListening();
-                recognition.onend = () => stopListening();
+                recognition.onerror = (event) => {
+                    console.warn("Aviso del sistema de voz:", event.error);
+                    stopListening();
+                };
+                
+                recognition.onend = () => { stopListening(); };
             }
 
             function toggleMic() {
@@ -476,15 +582,21 @@ app.get("/", (req, res) => {
                     alert('Tu navegador no soporta reconocimiento de voz.');
                     return;
                 }
+                if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
                 const micBtn = document.getElementById('micBtn');
+                
                 if (isListening) {
-                    recognition.stop();
+                    try { recognition.stop(); } catch(e) {}
+                    stopListening();
                 } else {
-                    recognition.start();
-                    isListening = true;
-                    micBtn.classList.add('active');
-                    micBtn.innerText = "🔴 ESCUCHANDO...";
-                    document.getElementById('userInput').placeholder = "Habla ahora con P.A.O....";
+                    try {
+                        recognition.start();
+                        isListening = true;
+                        micBtn.classList.add('active');
+                        micBtn.innerText = "🔴 ESCUCHANDO...";
+                    } catch(e) {
+                        stopListening();
+                    }
                 }
             }
 
@@ -495,20 +607,25 @@ app.get("/", (req, res) => {
                     micBtn.classList.remove('active');
                     micBtn.innerText = "🎤 MIC";
                 }
-                document.getElementById('userInput').placeholder = "Introduce comandos o mensajes para P.A.O...";
             }
 
             async function sendMessage() {
                 const input = document.getElementById('userInput');
+                const sendBtn = document.getElementById('sendBtn');
                 const messagesDiv = document.getElementById('messages');
                 const text = input.value.trim();
+                
                 if (!text) return;
 
-                messagesDiv.innerHTML += '<div class="message user">' + text + '</div>';
-                input.value = '';
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                input.disabled = true;
+                sendBtn.disabled = true;
 
-                history.push({ role: "user", content: text });
+                appendMessage('user', text);
+                input.value = '';
+
+                const typingId = 'typing-' + Date.now();
+                messagesDiv.innerHTML += '<div id="' + typingId + '" class="message assistant typing-indicator">Sincronizando frecuencia neuronal...</div>';
+                scrollToBottom();
 
                 try {
                     const res = await fetch('/chat', {
@@ -516,20 +633,25 @@ app.get("/", (req, res) => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ messages: history, userName: currentUserName })
                     });
+                    
                     const data = await res.json();
+                    document.getElementById(typingId)?.remove();
+
                     if(data.reply) {
-                        messagesDiv.innerHTML += '<div class="message assistant">' + data.reply + '</div>';
-                        speakText(data.reply); 
-                        if (!data.reply.includes("Fluctuación en el núcleo") && !data.reply.includes("Error de red")) {
-                            history.push({ role: "assistant", content: data.reply });
-                        }
+                        appendMessage('assistant', data.reply);
+                        speakText(data.reply);
                     } else {
-                        messagesDiv.innerHTML += '<div class="message assistant">¡Ay, ' + currentUserName + '! Fluctuación en el núcleo.</div>';
+                        appendMessage('assistant', '¡Ay, ' + currentUserName + '! Ligera fluctuación en el núcleo.', false);
                     }
                 } catch (e) {
-                    messagesDiv.innerHTML += '<div class="message assistant">¡Ay, ' + currentUserName + '! Error de red en el HUD: ' + e.message + '</div>';
+                    document.getElementById(typingId)?.remove();
+                    appendMessage('assistant', '¡Ay, ' + currentUserName + '! Error de red en el HUD: ' + e.message, false);
+                } finally {
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                    scrollToBottom();
                 }
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
         </script>
     </body>
@@ -542,26 +664,36 @@ app.post("/chat", async (req, res) => {
         const userMessages = req.body.messages || [];
         const userName = req.body.userName || "Usuario";
         
-        const dynamicSystemPrompt = systemPrompt + " Te estás comunicando con " + userName + ". Dirígete a él o ella por su nombre cuando sea natural.";
+        const dynamicSystemPrompt = systemPrompt + " Te estás comunicando con " + userName + ". Dirígete a él o ella por su nombre cuando sea natural de forma afectuosa y cercana.";
         const fullMessages = [{ role: "system", content: dynamicSystemPrompt }, ...userMessages];
+
+        if (!OPENROUTER_API_KEY) {
+            return res.status(500).json({ reply: "Error crítico: Falta configurar la API Key de OpenRouter en el entorno." });
+        }
 
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + OPENROUTER_API_KEY,
                 "Content-Type": "application/json",
-                "HTTP-Referer": "https://vercel.com",
+                "HTTP-Referer": "http://localhost:3000",
                 "X-Title": "P.A.O. HUD Assistant"
             },
             body: JSON.stringify({
-                model: "openai/gpt-3.5-turbo",
+                model: "google/gemini-2.5-flash",
                 messages: fullMessages,
-                temperature: 0.7,
+                temperature: 0.75,
                 max_tokens: 2048
             })
         });
 
+        if (!response.ok) {
+            const errBody = await response.text();
+            throw new Error("Estado HTTP " + response.status + " - " + errBody);
+        }
+
         const data = await response.json();
+        
         if (data.choices && data.choices.length > 0) {
             res.json({ reply: data.choices[0].message.content });
         } else {
@@ -573,6 +705,6 @@ app.post("/chat", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Servidor corriendo en puerto " + PORT));
+app.listen(PORT, () => console.log("Servidor de P.A.O. (Evolución AI) corriendo en puerto " + PORT));
 
 module.exports = app;
