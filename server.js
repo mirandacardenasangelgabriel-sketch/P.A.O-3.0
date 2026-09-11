@@ -409,7 +409,7 @@ app.get("/", (req, res) => {
             function speakText(text) {
                 if (!voiceEnabled || !('speechSynthesis' in window)) return;
                 
-                const cleanText = text.replace(/[*#_\`~]/g, '').replace(/[\\u{1F300}-\\u{1F5FF}\\u{1F900}-\\u{1F9FF}\\u{1F600}-\\u{1F64F}\\u{2600}-\\u{26FF}]/gu, '');
+                const cleanText = text.replace(/[*#_\`~]/g, '').replace(/[\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{2600}-\u{26FF}]/gu, '');
                 
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -572,9 +572,7 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log("Servidor local en puerto " + PORT));
-}
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Servidor corriendo en puerto " + PORT));
 
 module.exports = app;
