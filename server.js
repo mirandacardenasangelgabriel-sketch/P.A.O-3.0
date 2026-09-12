@@ -1,4 +1,4 @@
-﻿ require('dotenv').config();
+﻿require('dotenv').config();
 const express = require("express");
 
 const app = express();
@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>P.A.O. - Cosmic HUD Sunset Edition (Evolución AI)</title>
+        <title>P.A.O. - Cosmic HUD Sunset Edition (Widgets Evolution)</title>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
                 --hud-orange: #ff4500;
                 --hud-red: #cc0033;
                 --hud-glow: rgba(255, 69, 0, 0.6);
-                --hud-bg: rgba(15, 5, 10, 0.85);
+                --hud-bg: rgba(15, 5, 10, 0.9);
             }
             body {
                 font-family: 'Rajdhani', sans-serif;
@@ -114,15 +114,15 @@ app.get("/", (req, res) => {
                 box-shadow: 0 0 20px var(--hud-pink);
             }
             .hud-frame {
-                width: 92vw;
-                max-width: 1200px;
-                height: 88vh;
+                width: 94vw;
+                max-width: 1300px;
+                height: 90vh;
                 background: var(--hud-bg);
                 border: 2px solid var(--hud-orange);
                 box-shadow: 0 0 25px var(--hud-glow), inset 0 0 30px rgba(255, 20, 147, 0.15);
                 border-radius: 12px;
                 display: grid;
-                grid-template-columns: 260px 1fr 260px;
+                grid-template-columns: 280px 1fr 280px;
                 grid-template-rows: 70px 1fr 70px;
                 grid-template-areas:
                     "header header header"
@@ -144,7 +144,7 @@ app.get("/", (req, res) => {
                 text-shadow: 0 0 10px var(--hud-orange);
             }
             .hud-title {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
                 font-weight: 900;
                 background: linear-gradient(90deg, #ff758c, #ff7eb3);
                 -webkit-background-clip: text;
@@ -193,9 +193,11 @@ app.get("/", (req, res) => {
                 flex-direction: column;
                 gap: 12px;
                 color: #ff99b3;
+                overflow-y: auto;
             }
             .hud-panel-left { grid-area: left-panel; border-right: 1px dashed var(--hud-orange); }
             .hud-panel-right { grid-area: right-panel; border-left: 1px dashed var(--hud-orange); }
+            
             .stat-box {
                 background: rgba(255, 69, 0, 0.05);
                 border: 1px solid var(--hud-pink);
@@ -214,6 +216,64 @@ app.get("/", (req, res) => {
                 height: 100%;
                 background: linear-gradient(90deg, var(--hud-orange), var(--hud-pink));
                 width: 85%;
+            }
+            .widget-title {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.75rem;
+                color: #fff;
+                letter-spacing: 1px;
+                margin-bottom: 6px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .quick-pad {
+                width: 100%;
+                height: 95px;
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px solid var(--hud-pink);
+                border-radius: 4px;
+                color: #ffccd5;
+                padding: 8px;
+                font-family: 'Rajdhani', sans-serif;
+                font-size: 0.85rem;
+                resize: none;
+                outline: none;
+                box-sizing: border-box;
+                box-shadow: inset 0 0 6px rgba(255,20,147,0.2);
+            }
+            .quick-pad:focus {
+                border-color: var(--hud-orange);
+            }
+            .snippet-generator {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .snippet-select {
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid var(--hud-pink);
+                color: #fff;
+                padding: 5px;
+                border-radius: 4px;
+                font-family: 'Rajdhani', sans-serif;
+                font-size: 0.85rem;
+                outline: none;
+            }
+            .snippet-btn {
+                background: rgba(255, 69, 0, 0.3);
+                border: 1px solid var(--hud-orange);
+                color: #fff;
+                padding: 6px;
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.7rem;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: 0.2s;
+            }
+            .snippet-btn:hover {
+                background: var(--hud-orange);
+                box-shadow: 0 0 8px var(--hud-orange);
             }
             .hud-chat-main {
                 grid-area: chat-main;
@@ -266,6 +326,7 @@ app.get("/", (req, res) => {
                 backdrop-filter: blur(4px);
                 animation: fadeIn 0.3s ease-out;
                 word-break: break-word;
+                white-space: pre-wrap;
             }
             @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
             .user {
@@ -282,13 +343,6 @@ app.get("/", (req, res) => {
                 align-self: flex-start;
                 box-shadow: 0 0 10px rgba(255,20,147,0.2);
             }
-            .typing-indicator {
-                font-style: italic;
-                opacity: 0.7;
-                animation: pulseText 1.5s infinite;
-            }
-            @keyframes pulseText { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-            
             .hud-input-bar {
                 grid-area: footer;
                 border-top: 2px solid var(--hud-orange);
@@ -349,7 +403,7 @@ app.get("/", (req, res) => {
 
         <div class="hud-frame">
             <div class="hud-header">
-                <div class="hud-title">P.A.O. // SOLAR OS (EVOLVED)</div>
+                <div class="hud-title">P.A.O. // SOLAR OS (WIDGETS EDITION)</div>
                 <div class="control-btn-group">
                     <button class="reset-btn" onclick="resetMemory()" title="Borrar memoria y reiniciar sesión">🗑️ REINICIAR</button>
                     <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Hablar con P.A.O.">🎤 MIC</button>
@@ -358,7 +412,7 @@ app.get("/", (req, res) => {
             </div>
 
             <div class="hud-panel-left">
-                <div style="font-family: 'Orbitron'; font-size: 0.8rem; color: #fff;">SYSTEM DIAGNOSTICS</div>
+                <div class="widget-title">SYSTEM DIAGNOSTICS</div>
                 <div class="stat-box">
                     <div>CORE TEMP: 36.4°C</div>
                     <div class="stat-bar"><div class="stat-fill"></div></div>
@@ -367,25 +421,37 @@ app.get("/", (req, res) => {
                     <div>SOLAR MATRIX: 99.4%</div>
                     <div class="stat-bar"><div class="stat-fill" style="width: 95%;"></div></div>
                 </div>
+                <div class="widget-title" style="margin-top: 5px;">MÉXICO // CLIMA & HORA</div>
                 <div class="stat-box">
-                    <div>SYNAPSE LINK: EVOLVED</div>
+                    <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
+                    <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: #ffccd5;">Sincronizando atmósfera...</div>
                 </div>
             </div>
 
             <div class="hud-chat-main">
-                <div class="chat-messages" id="messages">
-                </div>
+                <div class="chat-messages" id="messages"></div>
             </div>
 
             <div class="hud-panel-right">
-                <div style="font-family: 'Orbitron'; font-size: 0.8rem; color: #fff;">VIBE SPECTRUM</div>
+                <div class="widget-title">BLOC DE NOTAS RÁPIDO</div>
+                <div class="stat-box" style="padding: 6px;">
+                    <textarea class="quick-pad" id="quickPad" placeholder="Escribe notas rápidas aquí..." oninput="saveQuickPad()"></textarea>
+                </div>
+                <div class="widget-title" style="margin-top: 5px;">GENERADOR DE SNIPPETS</div>
+                <div class="stat-box snippet-generator">
+                    <select class="snippet-select" id="snippetType">
+                        <option value="fetch">API Fetch (JS)</option>
+                        <option value="express">Ruta Express (Node)</option>
+                        <option value="python">Script Básico (Python)</option>
+                        <option value="css">Flexbox Centrar (CSS)</option>
+                    </select>
+                    <button class="snippet-btn" onclick="insertSnippetIntoChat()">⚡ INSERTAR CÓDIGO</button>
+                </div>
+                <div class="widget-title" style="margin-top: 5px;">VIBE SPECTRUM</div>
                 <div class="stat-box" style="border-color: var(--hud-orange);">
                     <div style="color: #ff4500;">● RED FREQUENCY</div>
                     <div style="color: #ff8c00;">● SOLAR ORANGE</div>
                     <div style="color: #ff1493;">● NEON PINK</div>
-                </div>
-                <div class="stat-box">
-                    <div>AI MODEL: GEMINI FLASH</div>
                 </div>
             </div>
 
@@ -400,28 +466,36 @@ app.get("/", (req, res) => {
             let voiceEnabled = true;
             let recognition = null;
             let isListening = false;
-            let spanishVoice = null;
+            let forcedFemaleVoice = null;
             let currentUserName = "";
 
             window.addEventListener('DOMContentLoaded', () => {
+                loadVoices();
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.onvoiceschanged = loadVoices;
+                }
+
                 const savedName = localStorage.getItem('pao_username');
                 const savedHistory = localStorage.getItem('pao_history');
+                const savedPad = localStorage.getItem('pao_quickpad');
+
+                if (savedPad) document.getElementById('quickPad').value = savedPad;
+
+                updateClock();
+                setInterval(updateClock, 1000);
+                loadWeather();
 
                 if (savedName) {
                     currentUserName = savedName;
                     document.getElementById('loginOverlay').style.display = 'none';
-                    
                     if (savedHistory) {
                         try {
                             history = JSON.parse(savedHistory);
                             renderHistory();
-                        } catch(e) {
-                            history = [];
-                        }
+                        } catch(e) { history = []; }
                     }
-
                     if (history.length === 0) {
-                        const welcomeText = '¡Hola de nuevo, ' + currentUserName + '! 🌸 Protocolo de memoria restaurado. P.A.O. evolucionada y en línea. ✨';
+                        const welcomeText = '¡Hola de nuevo, ' + currentUserName + '! 🌸 P.A.O. lista con comandos web y de oficina. ✨';
                         appendMessage('assistant', welcomeText, false);
                         history.push({ role: "assistant", content: welcomeText });
                         saveState();
@@ -431,6 +505,39 @@ app.get("/", (req, res) => {
                     document.getElementById('loginOverlay').style.display = 'flex';
                 }
             });
+
+            function updateClock() {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString('es-MX');
+            }
+
+            async function loadWeather() {
+                try {
+                    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.43&longitude=-99.13&current_weather=true');
+                    const data = await res.json();
+                    if (data && data.current_weather) {
+                        document.getElementById('liveWeather').innerText = 'CDMX: ' + data.current_weather.temperature + '°C';
+                    }
+                } catch(e) {
+                    document.getElementById('liveWeather').innerText = 'CDMX: 24°C (Solar Stable)';
+                }
+            }
+
+            function saveQuickPad() {
+                localStorage.setItem('pao_quickpad', document.getElementById('quickPad').value);
+            }
+
+            function insertSnippetIntoChat() {
+                const type = document.getElementById('snippetType').value;
+                let snippet = "";
+                if(type === 'fetch') snippet = "const res = await fetch('URL');\\nconst data = await res.json();";
+                else if(type === 'express') snippet = "app.get('/ruta', (req, res) => {\\n    res.json({ status: 'ok' });\\n});";
+                else if(type === 'python') snippet = "def iniciar():\\n    print('P.A.O. Activa')";
+                else if(type === 'css') snippet = "display: flex;\\njustify-content: center;\\nalign-items: center;";
+                
+                document.getElementById('userInput').value = "Analiza este fragmento:\\n\`\`\`\\n" + snippet + "\\n\`\`\`";
+                document.getElementById('userInput').focus();
+            }
 
             function saveState() {
                 localStorage.setItem('pao_username', currentUserName);
@@ -454,9 +561,7 @@ app.get("/", (req, res) => {
 
                 if (save) {
                     history.push({ role: role, content: text });
-                    if (history.length > 25) {
-                        history = history.slice(history.length - 25);
-                    }
+                    if (history.length > 25) history = history.slice(history.length - 25);
                     saveState();
                 }
             }
@@ -468,47 +573,37 @@ app.get("/", (req, res) => {
             }
 
             function resetMemory() {
-                if (confirm("¿Estás seguro de reiniciar el enlace y borrar la memoria de P.A.O.?")) {
-                    localStorage.removeItem('pao_username');
-                    localStorage.removeItem('pao_history');
+                if (confirm("¿Reiniciar enlace y borrar memoria?")) {
+                    localStorage.clear();
                     location.reload();
                 }
             }
 
             function loadVoices() {
+                if (!('speechSynthesis' in window)) return;
                 const voices = window.speechSynthesis.getVoices();
-                spanishVoice = voices.find(v => v.lang.startsWith('es') && (
-                    v.name.toLowerCase().includes('female') || 
-                    v.name.toLowerCase().includes('mujer') || 
-                    v.name.toLowerCase().includes('helena') || 
-                    v.name.toLowerCase().includes('laura') || 
-                    v.name.toLowerCase().includes('lucia') || 
-                    v.name.toLowerCase().includes('sofia') || 
-                    v.name.toLowerCase().includes('mia') || 
-                    v.name.toLowerCase().includes('paulina') || 
-                    v.name.toLowerCase().includes('monica') || 
-                    v.name.toLowerCase().includes('sabina') ||
-                    v.name.toLowerCase().includes('zira') ||
-                    v.name.toLowerCase().includes('victoria')
-                )) 
-                || voices.find(v => v.lang.startsWith('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft'))) 
-                || voices.find(v => v.lang.startsWith('es'));
-            }
+                if (!voices || voices.length === 0) return;
 
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.onvoiceschanged = loadVoices;
-                loadVoices();
+                const femaleKeywords = ['female', 'woman', 'lucia', 'paulina', 'mia', 'sabina', 'helena', 'laura', 'sofia', 'carmen', 'elena', 'google español', 'microsoft helena', 'microsoft laura'];
+                let found = voices.find(v => v.lang.startsWith('es') && femaleKeywords.some(kw => v.name.toLowerCase().includes(kw)));
+                if (!found) found = voices.find(v => v.lang.startsWith('es') && (v.name.includes('Google') || v.name.includes('Microsoft')));
+                if (!found) found = voices.find(v => v.lang.startsWith('es'));
+                if (found) forcedFemaleVoice = found;
             }
 
             function speakText(text) {
                 if (!voiceEnabled || !('speechSynthesis' in window)) return;
-                const cleanText = text.replace(/[*#_\`~]/g, '').replace(/[\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{2600}-\u{26FF}]/gu, '');
+                loadVoices();
+                
+                const cleanText = text.replace(/[*#_\`~]/g, '');
                 window.speechSynthesis.cancel();
+                
                 const utterance = new SpeechSynthesisUtterance(cleanText);
                 utterance.lang = 'es-MX';
                 utterance.rate = 1.05;
-                utterance.pitch = 1.25;
-                if (spanishVoice) utterance.voice = spanishVoice;
+                utterance.pitch = 1.3;
+                if (forcedFemaleVoice) utterance.voice = forcedFemaleVoice;
+                
                 window.speechSynthesis.speak(utterance);
             }
 
@@ -519,29 +614,119 @@ app.get("/", (req, res) => {
 
             function startSession() {
                 const inputVal = document.getElementById('userNameInput').value.trim();
-                if(!inputVal) {
-                    alert("Por favor, introduce un nombre.");
-                    return;
-                }
+                if(!inputVal) return alert("Introduce un nombre.");
                 currentUserName = inputVal;
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('userInput').focus();
 
-                const welcomeText = '¡Hola, ' + currentUserName + '! 🌸 Protocolo solar evolucionado activo. P.A.O. sincronizada a tu interfaz HUD con máxima potencia. ¿Qué creamos hoy? ✨';
+                const welcomeText = '¡Hola, ' + currentUserName + '! 🌸 P.A.O. sincronizada. Pídeme abrir páginas web, YouTube o documentos de oficina. ✨';
                 appendMessage('assistant', welcomeText);
-                speakText('¡Hola, ' + currentUserName + '! Protocolo solar evolucionado activo.');
+                speakText(welcomeText);
             }
 
             function toggleVoice() {
                 voiceEnabled = !voiceEnabled;
                 const btn = document.getElementById('voiceToggle');
-                if (voiceEnabled) {
-                    btn.classList.add('active');
-                    btn.innerText = "🔊 VOZ: ACTIVA";
-                } else {
-                    btn.classList.remove('active');
-                    btn.innerText = "🔇 VOZ: SILENCIADA";
-                    window.speechSynthesis.cancel();
+                btn.classList.toggle('active', voiceEnabled);
+                btn.innerText = voiceEnabled ? "🔊 VOZ: ACTIVA" : "🔇 VOZ: SILENCIADA";
+                if (!voiceEnabled) window.speechSynthesis.cancel();
+            }
+
+            // --- INTÉRPRETE UNIVERSAL DE COMANDOS (WEB Y OFICINA) ---
+            function checkUniversalWebCommands(text) {
+                const lower = text.toLowerCase().trim();
+                let targetUrl = "";
+                let actionName = "";
+
+                // Herramientas de Oficina
+                if (lower.includes('abre word') || lower.includes('nuevo word') || lower.includes('documento de word')) {
+                    targetUrl = "https://word.new";
+                    actionName = "Microsoft Word";
+                } else if (lower.includes('abre excel') || lower.includes('nueva hoja') || lower.includes('excel')) {
+                    targetUrl = "https://excel.new";
+                    actionName = "Microsoft Excel";
+                } else if (lower.includes('abre powerpoint') || lower.includes('presentación')) {
+                    targetUrl = "https://powerpoint.new";
+                    actionName = "Microsoft PowerPoint";
+                } else if (lower.includes('abre drive') || lower.includes('google drive')) {
+                    targetUrl = "https://drive.google.com";
+                    actionName = "Google Drive";
+                } 
+                // Navegación Web General y Buscadores
+                else if (lower.startsWith('abre youtube') || lower.startsWith('busca en youtube')) {
+                    const query = text.replace(/abre youtube|busca en youtube/gi, "").trim();
+                    targetUrl = query ? \`https://www.youtube.com/results?search_query=\${encodeURIComponent(query)}\` : "https://www.youtube.com";
+                    actionName = "YouTube";
+                } else if (lower.startsWith('abre google') || lower.startsWith('busca en google')) {
+                    const query = text.replace(/abre google|busca en google/gi, "").trim();
+                    targetUrl = query ? \`https://www.google.com/search?q=\${encodeURIComponent(query)}\` : "https://www.google.com";
+                    actionName = "Google";
+                } else if (lower.startsWith('abre github')) {
+                    const query = text.replace(/abre github/gi, "").trim();
+                    targetUrl = query ? \`https://github.com/search?q=\${encodeURIComponent(query)}\` : "https://github.com";
+                    actionName = "GitHub";
+                } else if (lower.startsWith('abre wikipedia') || lower.startsWith('busca en wikipedia')) {
+                    const query = text.replace(/abre wikipedia|busca en wikipedia/gi, "").trim();
+                    targetUrl = query ? \`https://es.wikipedia.org/wiki/Special:Search?search=\${encodeURIComponent(query)}\` : "https://es.wikipedia.org";
+                    actionName = "Wikipedia";
+                } else if (lower.startsWith('abre') || lower.startsWith('entra a') || lower.startsWith('visita')) {
+                    let site = text.replace(/abre|entra a|visita|el sitio|la página/gi, "").trim();
+                    if (site) {
+                        if (!site.startsWith('http://') && !site.startsWith('https://')) {
+                            if (!site.includes('.')) {
+                                targetUrl = \`https://www.google.com/search?q=\${encodeURIComponent(site)}\`;
+                                actionName = site;
+                            } else {
+                                targetUrl = \`https://\${site}\`;
+                                actionName = site;
+                            }
+                        } else {
+                            targetUrl = site;
+                            actionName = site;
+                        }
+                    }
+                }
+
+                if (targetUrl) {
+                    window.open(targetUrl, '_blank');
+                    const replyText = \`Abriendo \${actionName}, \${currentUserName}. 🚀✨\`;
+                    appendMessage('assistant', replyText);
+                    speakText(replyText);
+                    return true;
+                }
+                return false;
+            }
+
+            async function sendMessage() {
+                const input = document.getElementById('userInput');
+                const text = input.value.trim();
+                if (!text) return;
+
+                input.value = '';
+                appendMessage('user', text);
+
+                // 1. Revisar comandos locales (web y oficina)
+                if (checkUniversalWebCommands(text)) {
+                    return;
+                }
+
+                // 2. Procesamiento con IA (OpenRouter)
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: text, history: history.slice(-10) })
+                    });
+
+                    const data = await response.json();
+                    if (data && data.reply) {
+                        appendMessage('assistant', data.reply);
+                        speakText(data.reply);
+                    } else {
+                        appendMessage('assistant', '⚠️ Error de enlace con el núcleo OpenRouter.');
+                    }
+                } catch (err) {
+                    appendMessage('assistant', '⚠️ Error crítico de red.');
                 }
             }
 
@@ -549,54 +734,25 @@ app.get("/", (req, res) => {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 recognition = new SpeechRecognition();
                 recognition.lang = 'es-MX';
-                recognition.continuous = false;
-                recognition.interimResults = true;
-
                 recognition.onresult = function(event) {
-                    let interimTranscript = '';
-                    let finalTranscript = '';
-                    for (let i = event.resultIndex; i < event.results.length; ++i) {
-                        if (event.results[i].isFinal) {
-                            finalTranscript += event.results[i][0].transcript;
-                        } else {
-                            interimTranscript += event.results[i][0].transcript;
-                        }
-                    }
-                    document.getElementById('userInput').value = finalTranscript || interimTranscript;
-                    if (finalTranscript) {
-                        stopListening();
-                        sendMessage();
-                    }
-                };
-
-                recognition.onerror = (event) => {
-                    console.warn("Aviso del sistema de voz:", event.error);
+                    document.getElementById('userInput').value = event.results[0][0].transcript;
                     stopListening();
+                    sendMessage();
                 };
-                
-                recognition.onend = () => { stopListening(); };
+                recognition.onerror = () => stopListening();
+                recognition.onend = () => stopListening();
             }
 
             function toggleMic() {
-                if (!recognition) {
-                    alert('Tu navegador no soporta reconocimiento de voz.');
-                    return;
-                }
-                if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
-                const micBtn = document.getElementById('micBtn');
-                
+                if (!recognition) return alert('No soportado en este navegador.');
                 if (isListening) {
-                    try { recognition.stop(); } catch(e) {}
+                    recognition.stop();
                     stopListening();
                 } else {
-                    try {
-                        recognition.start();
-                        isListening = true;
-                        micBtn.classList.add('active');
-                        micBtn.innerText = "🔴 ESCUCHANDO...";
-                    } catch(e) {
-                        stopListening();
-                    }
+                    recognition.start();
+                    isListening = true;
+                    document.getElementById('micBtn').classList.add('active');
+                    document.getElementById('micBtn').innerText = "🔴 ESCUCHANDO...";
                 }
             }
 
@@ -608,51 +764,6 @@ app.get("/", (req, res) => {
                     micBtn.innerText = "🎤 MIC";
                 }
             }
-
-            async function sendMessage() {
-                const input = document.getElementById('userInput');
-                const sendBtn = document.getElementById('sendBtn');
-                const messagesDiv = document.getElementById('messages');
-                const text = input.value.trim();
-                
-                if (!text) return;
-
-                input.disabled = true;
-                sendBtn.disabled = true;
-
-                appendMessage('user', text);
-                input.value = '';
-
-                const typingId = 'typing-' + Date.now();
-                messagesDiv.innerHTML += '<div id="' + typingId + '" class="message assistant typing-indicator">Sincronizando frecuencia neuronal...</div>';
-                scrollToBottom();
-
-                try {
-                    const res = await fetch('/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ messages: history, userName: currentUserName })
-                    });
-                    
-                    const data = await res.json();
-                    document.getElementById(typingId)?.remove();
-
-                    if(data.reply) {
-                        appendMessage('assistant', data.reply);
-                        speakText(data.reply);
-                    } else {
-                        appendMessage('assistant', '¡Ay, ' + currentUserName + '! Ligera fluctuación en el núcleo.', false);
-                    }
-                } catch (e) {
-                    document.getElementById(typingId)?.remove();
-                    appendMessage('assistant', '¡Ay, ' + currentUserName + '! Error de red en el HUD: ' + e.message, false);
-                } finally {
-                    input.disabled = false;
-                    sendBtn.disabled = false;
-                    input.focus();
-                    scrollToBottom();
-                }
-            }
         </script>
     </body>
     </html>
@@ -661,50 +772,49 @@ app.get("/", (req, res) => {
 
 app.post("/chat", async (req, res) => {
     try {
-        const userMessages = req.body.messages || [];
-        const userName = req.body.userName || "Usuario";
-        
-        const dynamicSystemPrompt = systemPrompt + " Te estás comunicando con " + userName + ". Dirígete a él o ella por su nombre cuando sea natural de forma afectuosa y cercana.";
-        const fullMessages = [{ role: "system", content: dynamicSystemPrompt }, ...userMessages];
+        const { message, history } = req.body;
 
         if (!OPENROUTER_API_KEY) {
-            return res.status(500).json({ reply: "Error crítico: Falta configurar la API Key de OpenRouter en el entorno." });
+            return res.status(500).json({ reply: "⚠️ Error crítico: La variable de entorno OPENROUTER_API_KEY no está configurada en el archivo .env o tu cuenta de OpenRouter requiere créditos activos." });
         }
+
+        const formattedMessages = [
+            { role: "system", content: systemPrompt },
+            ...(history || []),
+            { role: "user", content: message }
+        ];
 
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": "Bearer " + OPENROUTER_API_KEY,
+                "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
                 "Content-Type": "application/json",
                 "HTTP-Referer": "http://localhost:3000",
-                "X-Title": "P.A.O. HUD Assistant"
+                "X-Title": "P.A.O. HUD OS"
             },
             body: JSON.stringify({
-                model: "google/gemini-2.5-flash",
-                messages: fullMessages,
-                temperature: 0.75,
-                max_tokens: 2048
+                model: "deepseek/deepseek-chat",
+                messages: formattedMessages
             })
         });
-
-        if (!response.ok) {
-            const errBody = await response.text();
-            throw new Error("Estado HTTP " + response.status + " - " + errBody);
-        }
 
         const data = await response.json();
         
         if (data.choices && data.choices.length > 0) {
-            res.json({ reply: data.choices[0].message.content });
+            const reply = data.choices[0].message.content;
+            res.json({ reply });
         } else {
-            res.json({ reply: "¡Ay! Detalle técnico: " + (data.error?.message || "Error en OpenRouter") });
+            console.error("OpenRouter Error Details:", data);
+            const errorMsg = data.error && data.error.message ? data.error.message : "Error desconocido en la respuesta de OpenRouter.";
+            res.status(500).json({ reply: `⚠️ Fallo en la matriz: ${errorMsg}` });
         }
     } catch (error) {
-        res.json({ reply: "¡Ay! Detalle técnico: " + error.message });
+        console.error("Error crítico en servidor Node:", error);
+        res.status(500).json({ reply: "⚠️ Error interno de conexión al procesar la solicitud con P.A.O." });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Servidor de P.A.O. (Evolución AI) corriendo en puerto " + PORT));
-
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`P.A.O. HUD ejecutándose correctamente en http://localhost:${PORT}`);
+});
