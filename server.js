@@ -5,18 +5,23 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 
-// Servir la carpeta public como estática
-app.use(express.static(path.join(__dirname, 'public')));
+// Servir la carpeta public con ruta absoluta garantizada para producción (Render)
+app.use(express.static(path.resolve(__dirname, 'public')));
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const systemPrompt = "Te llamas P.A.O. Eres una asistente virtual todoterreno con una interfaz estilo HUD cósmico, combinando una personalidad sumamente empática, alegre, cercana y brillante con un sistema operativo avanzado. Siempre buscas apoyar de forma proactiva, creativa y eficiente en tareas de programación, automatización y gestión.";
+
+// Ruta explícita para asegurar que el index.html se entregue correctamente
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 app.post("/chat", async (req, res) => {
     try {
         const { message, history } = req.body;
 
         if (!OPENROUTER_API_KEY) {
-            return res.status(500).json({ reply: "⚠️ Error crítico: La variable de entorno OPENROUTER_API_KEY no está configurada." });
+            return res.status(500).json({ reply: "⚠️ Error crítico: La variable de entorno OPENROUTER_API_KEY no está configurada en Render." });
         }
 
         const formattedMessages = [
@@ -30,7 +35,7 @@ app.post("/chat", async (req, res) => {
             headers: {
                 "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
                 "Content-Type": "application/json",
-                "HTTP-Referer": "http://localhost:3000",
+                "HTTP-Referer": "https://render.com",
                 "X-Title": "P.A.O. HUD OS"
             },
             body: JSON.stringify({
@@ -57,5 +62,5 @@ app.post("/chat", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`P.A.O. HUD ejecutándose correctamente en http://localhost:${PORT}`);
+    console.log(`P.A.O. HUD ejecutándose correctamente en el puerto ${PORT}`);
 });
