@@ -136,7 +136,7 @@
             font-size: 1.2rem;
             font-weight: 900;
             background: linear-gradient(90deg, #ff758c, #ff7eb3);
-           background-clip: text;
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -277,11 +277,24 @@
         }
         .lofi-controls {
             display: flex;
+            flex-direction: column;
             gap: 6px;
-            align-items: center;
+        }
+        .lofi-input-group {
+            display: flex;
+            gap: 4px;
+        }
+        .lofi-input-group input {
+            flex: 1;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--hud-pink);
+            border-radius: 3px;
+            color: #fff;
+            padding: 5px;
+            font-size: 0.75rem;
+            outline: none;
         }
         .lofi-btn {
-            flex: 1;
             background: rgba(255, 69, 0, 0.2);
             border: 1px solid var(--hud-orange);
             color: #fff;
@@ -407,9 +420,65 @@
             filter: brightness(1.2);
             box-shadow: 0 0 20px var(--hud-pink);
         }
+
+        /* DISEÑO RESPONSIVO PARA TELÉFONOS (MODO VERTICAL SIN GIRAR) */
         @media(max-width: 900px) {
-            .hud-frame { grid-template-columns: 1fr; grid-template-areas: "header" "chat-main" "footer"; height: 96vh; }
-            .hud-panel-left, .hud-panel-right { display: none; }
+            body {
+                height: 100vh;
+                overflow: auto;
+                align-items: stretch;
+            }
+            .hud-frame {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
+                border: none;
+                border-radius: 0;
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr 70px;
+                grid-template-areas:
+                    "header"
+                    "chat-main"
+                    "footer";
+            }
+            .hud-panel-left, .hud-panel-right {
+                display: none; /* Se ocultan paneles laterales en móvil para priorizar el chat */
+            }
+            .hud-header {
+                padding: 0 12px;
+            }
+            .hud-title {
+                font-size: 0.95rem;
+                letter-spacing: 1px;
+            }
+            .control-btn-group {
+                gap: 4px;
+            }
+            .voice-btn, .mic-btn, .reset-btn, .clip-btn {
+                padding: 5px 6px;
+                font-size: 0.55rem;
+            }
+            .hud-chat-main {
+                padding: 10px;
+            }
+            .message {
+                max-width: 90%;
+                font-size: 0.9rem;
+                padding: 10px 12px;
+            }
+            .hud-input-bar {
+                padding: 0 10px;
+                gap: 8px;
+            }
+            .hud-input-bar input {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            .hud-input-bar button {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+            }
         }
     </style>
 </head>
@@ -423,14 +492,12 @@
         </div>
     </div>
 
-    <audio id="lofiPlayer" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
-
     <div class="hud-frame">
         <div class="hud-header">
             <div class="hud-title">P.A.O. // SOLAR OS</div>
             <div class="control-btn-group">
-                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y enviar a P.A.O.">📋 PORTAPAPELES</button>
-                <button class="reset-btn" onclick="resetMemory()" title="Reiniciar sesión">🗑️ REINICIAR</button>
+                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y enviar a P.A.O.">📋 CLIP</button>
+                <button class="reset-btn" onclick="resetMemory()" title="Reiniciar sesión">🗑️</button>
                 <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Hablar">🎤 MIC</button>
                 <button class="voice-btn active" id="voiceToggle" onclick="toggleVoice()">🔊 VOZ</button>
             </div>
@@ -451,10 +518,13 @@
                 <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
                 <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: #ffccd5;">Sincronizando...</div>
             </div>
-            <div class="widget-title" style="margin-top: 5px;">AUDIO AMBIENTAL</div>
+            <div class="widget-title" style="margin-top: 5px;">REPRODUCTOR MUSICAL</div>
             <div class="stat-box">
                 <div class="lofi-controls">
-                    <button class="lofi-btn" id="lofiBtn" onclick="toggleLofiMusic()">▶ MÚSICA LOFI</button>
+                    <div class="lofi-input-group">
+                        <input type="text" id="songInput" placeholder="Busca cualquier canción..." onkeypress="if(event.key === 'Enter') playTypedSong()">
+                        <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -497,7 +567,6 @@
         let isListening = false;
         let forcedFemaleVoice = null;
         let currentUserName = "";
-        let lofiPlaying = false;
 
         let defaultBookmarks = [
             { name: "GitHub", url: "https://github.com" },
@@ -588,20 +657,21 @@
             renderBookmarks();
         }
 
-        function toggleLofiMusic() {
-            const player = document.getElementById('lofiPlayer');
-            const btn = document.getElementById('lofiBtn');
-            lofiPlaying = !lofiPlaying;
-            if (lofiPlaying) {
-                player.play().catch(() => {});
-                btn.innerText = "⏸ PAUSAR LOFI";
-                btn.style.background = "var(--hud-pink)";
-                speakText("Activando música lofi para programar.");
-            } else {
-                player.pause();
-                btn.innerText = "▶ MÚSICA LOFI";
-                btn.style.background = "rgba(255, 69, 0, 0.2)";
-            }
+        function playAnySong(songName) {
+            if (!songName) return;
+            const encodedQuery = encodeURIComponent(songName);
+            const targetUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
+            
+            window.open(targetUrl, '_blank');
+            
+            const replyText = `Reproduciendo "${songName}", ${currentUserName}. 🎶✨`;
+            appendMessage('assistant', replyText);
+            speakText(replyText);
+        }
+
+        function playTypedSong() {
+            const val = document.getElementById('songInput').value.trim();
+            if (val) playAnySong(val);
         }
 
         function updateClock() {
@@ -721,14 +791,12 @@
         function checkUniversalCommands(text) {
             const lower = text.toLowerCase().trim();
 
-            if (lower.includes('pon música') || lower.includes('música lofi') || lower.includes('pon musica para programar')) {
-                if (!lofiPlaying) toggleLofiMusic();
-                else {
-                    const reply = `La música lofi ya está sonando, ${currentUserName}. 🎧✨`;
-                    appendMessage('assistant', reply);
-                    speakText(reply);
+            if (lower.startsWith('pon la canción') || lower.startsWith('reproduce') || lower.startsWith('pon')) {
+                let song = text.replace(/pon la canción|reproduce|pon/gi, "").trim();
+                if (song) {
+                    playAnySong(song);
+                    return true;
                 }
-                return true;
             }
 
             let targetUrl = "";

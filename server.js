@@ -8,7 +8,7 @@ app.use(express.json());
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const systemPrompt = "Te llamas P.A.O. Eres una asistente virtual todoterreno con una interfaz estilo HUD cósmico, combinando una personalidad sumamente empática, alegre, cercana y brillante con un sistema operativo avanzado. Siempre buscas apoyar de forma proactiva, creativa y eficiente en tareas de programación, automatización y gestión.";
 
-// Envía el index.html directamente desde la raíz del proyecto
+// Sirve el index.html directamente desde la raíz del proyecto
 app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'index.html'));
 });
