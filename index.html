@@ -3,155 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P.A.O. - Cosmic HUD Ultimate OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>P.A.O. // ULTIMATE COSMIC HUD OS - v6.1.1</title>
+    <!-- Fuentes Sci-Fi Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Highlight.js para Sintaxis de Código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
+        /* ==========================================================================
+           1. VARIABLES CSS & SISTEMA DE TEMAS AVANZADO (RGB HUD / 4 TEMAS)
+           ========================================================================== */
         :root {
             --hud-pink: #ff1493;
             --hud-orange: #ff4500;
             --hud-red: #cc0033;
+            --hud-cyan: #00ffcc;
             --hud-glow: rgba(255, 69, 0, 0.6);
-            --hud-bg: rgba(15, 5, 10, 0.9);
+            --hud-glow-intense: rgba(255, 20, 147, 0.8);
+            --hud-bg: rgba(12, 3, 8, 0.94);
+            --hud-panel-bg: rgba(20, 5, 12, 0.85);
             --hud-text: #ffccd5;
+            --hud-border: rgba(255, 69, 0, 0.5);
+            --font-primary: 'Rajdhani', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
         }
 
         [data-theme="jarvis"] {
             --hud-pink: #00e5ff;
             --hud-orange: #0088ff;
             --hud-red: #00ffe1;
+            --hud-cyan: #00ffff;
             --hud-glow: rgba(0, 229, 255, 0.5);
-            --hud-bg: rgba(3, 11, 20, 0.95);
+            --hud-glow-intense: rgba(0, 136, 255, 0.8);
+            --hud-bg: rgba(2, 8, 16, 0.96);
+            --hud-panel-bg: rgba(4, 14, 26, 0.9);
             --hud-text: #b3f0ff;
+            --hud-border: rgba(0, 229, 255, 0.6);
+        }
+
+        [data-theme="matrix"] {
+            --hud-pink: #00ff66;
+            --hud-orange: #00cc44;
+            --hud-red: #009933;
+            --hud-cyan: #adff2f;
+            --hud-glow: rgba(0, 255, 102, 0.6);
+            --hud-glow-intense: rgba(0, 255, 102, 0.9);
+            --hud-bg: rgba(2, 12, 5, 0.96);
+            --hud-panel-bg: rgba(3, 20, 8, 0.9);
+            --hud-text: #ccffdd;
+            --hud-border: rgba(0, 255, 102, 0.6);
+        }
+
+        [data-theme="stark"] {
+            --hud-pink: #ffb700;
+            --hud-orange: #ff6f00;
+            --hud-red: #ff3300;
+            --hud-cyan: #ffea00;
+            --hud-glow: rgba(255, 183, 0, 0.6);
+            --hud-glow-intense: rgba(255, 111, 0, 0.9);
+            --hud-bg: rgba(15, 8, 2, 0.96);
+            --hud-panel-bg: rgba(26, 14, 4, 0.9);
+            --hud-text: #fff2cc;
+            --hud-border: rgba(255, 183, 0, 0.6);
+        }
+
+        /* ==========================================================================
+           2. ESTILOS GLOBALES Y EFECTO SCANLINE DE PANTALLA HOLOGRÁFICA
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: radial-gradient(circle at center, #260515 0%, #0a0104 100%);
-            margin: 0;
+            font-family: var(--font-primary);
+            background: radial-gradient(circle at center, #1f0412 0%, #050002 100%);
             height: 100vh;
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             color: var(--hud-text);
-            transition: background 0.3s ease;
+            transition: background 0.4s ease;
         }
 
-        [data-theme="jarvis"] body {
-            background: radial-gradient(circle at center, #021a2e 0%, #00050a 100%);
-        }
+        [data-theme="jarvis"] body { background: radial-gradient(circle at center, #01101f 0%, #000205 100%); }
+        [data-theme="matrix"] body { background: radial-gradient(circle at center, #021a08 0%, #000501 100%); }
+        [data-theme="stark"] body { background: radial-gradient(circle at center, #261202 0%, #050200 100%); }
 
         body::before {
             content: " ";
             display: block;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 999;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 9999;
             background-size: 100% 4px, 6px 100%;
             pointer-events: none;
         }
+
+        /* ==========================================================================
+           3. MODAL / OVERLAY DE CONTRASEÑA PARA J.A.R.V.I.S.
+           ========================================================================== */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, #1a0210 0%, #050002 100%);
-            display: flex;
+            background: rgba(5, 0, 2, 0.88);
+            display: none;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
+            z-index: 20000;
+            backdrop-filter: blur(8px);
         }
-        [data-theme="jarvis"] .login-overlay {
-            background: radial-gradient(circle at center, #02121f 0%, #000205 100%);
-        }
+
         .login-box {
             background: var(--hud-bg);
             border: 2px solid var(--hud-orange);
-            box-shadow: 0 0 35px var(--hud-glow), inset 0 0 20px rgba(0, 229, 255, 0.2);
-            padding: 40px;
+            box-shadow: 0 0 45px var(--hud-glow), inset 0 0 25px rgba(0, 229, 255, 0.2);
+            padding: 35px;
             border-radius: 12px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
             width: 90%;
-            max-width: 420px;
+            max-width: 380px;
         }
+
         .login-box h2 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: var(--font-tech);
             color: #fff;
-            margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-shadow: 0 0 10px var(--hud-pink);
-            letter-spacing: 2px;
         }
-        .login-box p {
-            color: var(--hud-text);
-            font-size: 0.95rem;
-            margin: 0;
-        }
+
+        .login-box p { color: var(--hud-text); font-size: 0.9rem; }
+
         .login-box input {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--hud-pink);
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 12px;
             color: #fff;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: var(--font-primary);
             font-size: 1.1rem;
             outline: none;
             text-align: center;
-            box-shadow: inset 0 0 8px rgba(0,229,255,0.3);
         }
-        .login-box input:focus {
-            border-color: var(--hud-orange);
-            box-shadow: 0 0 15px var(--hud-glow);
-        }
+
+        .login-box-actions { display: flex; gap: 10px; }
         .login-box button {
+            flex: 1;
             background: linear-gradient(135deg, var(--hud-orange), var(--hud-pink));
             border: none;
             color: #fff;
-            padding: 14px;
-            font-family: 'Orbitron', sans-serif;
+            padding: 12px;
+            font-family: var(--font-tech);
             font-weight: bold;
-            letter-spacing: 2px;
             cursor: pointer;
-            border-radius: 4px;
-            box-shadow: 0 0 12px var(--hud-glow);
-            transition: all 0.2s;
+            border-radius: 6px;
+            transition: 0.3s;
         }
-        .login-box button:hover {
-            filter: brightness(1.2);
-            box-shadow: 0 0 20px var(--hud-pink);
-        }
+        .login-box button.cancel-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* ==========================================================================
+           4. MARCO PRINCIPAL HUD (LAYOUT DE 3 COLUMNAS RESPONSIVO)
+           ========================================================================== */
         .hud-frame {
-            width: 94vw;
-            max-width: 1300px;
-            height: 90vh;
+            width: 96vw;
+            max-width: 1480px;
+            height: 94vh;
             background: var(--hud-bg);
             border: 2px solid var(--hud-orange);
-            box-shadow: 0 0 25px var(--hud-glow), inset 0 0 30px rgba(0, 229, 255, 0.15);
-            border-radius: 12px;
+            box-shadow: 0 0 30px var(--hud-glow), inset 0 0 35px rgba(0, 229, 255, 0.12);
+            border-radius: 14px;
             display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            grid-template-rows: 70px 1fr 70px;
+            grid-template-columns: 310px 1fr 310px;
+            grid-template-rows: 75px 1fr 75px;
             grid-template-areas:
                 "header header header"
                 "left-panel chat-main right-panel"
                 "footer footer footer";
             position: relative;
+            backdrop-filter: blur(8px);
         }
+
+        /* ==========================================================================
+           5. CABECERA HUD Y CONTROLES SUPERIORES
+           ========================================================================== */
         .hud-header {
             grid-area: header;
             border-bottom: 2px solid var(--hud-pink);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 25px;
-            background: linear-gradient(90deg, rgba(0,229,255,0.1), rgba(0,136,255,0.2), rgba(0,229,255,0.1));
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
+            padding: 0 22px;
+            background: linear-gradient(90deg, rgba(0,229,255,0.08), rgba(0,136,255,0.18), rgba(0,229,255,0.08));
+            font-family: var(--font-tech);
+            letter-spacing: 1.5px;
             color: #fff;
             text-shadow: 0 0 10px var(--hud-orange);
+            gap: 10px;
         }
+
         .hud-title {
             font-size: 1.2rem;
             font-weight: 900;
@@ -159,57 +217,55 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        .control-btn-group {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select {
-            background: rgba(0, 229, 255, 0.15);
+
+        .control-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select, .model-select, .history-btn, .sandbox-toggle-btn {
+            background: rgba(0, 229, 255, 0.18);
             border: 1px solid var(--hud-pink);
             color: #fff;
-            padding: 6px 10px;
-            border-radius: 4px;
+            padding: 6px 9px;
+            border-radius: 5px;
             cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
-            transition: all 0.2s;
+            font-family: var(--font-tech);
+            font-size: 0.62rem;
+            transition: all 0.25s;
             outline: none;
+            letter-spacing: 0.5px;
         }
-        .theme-select {
-            background: rgba(0, 136, 255, 0.2);
+
+        .theme-select, .model-select {
+            background: rgba(0, 136, 255, 0.22);
+            font-family: var(--font-primary);
+            font-weight: 600;
         }
-        .clip-btn {
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.15);
-            color: #afffe0;
+
+        .clip-btn { border-color: var(--hud-cyan); background: rgba(0, 255, 204, 0.18); color: #afffe0; }
+        .clip-btn:hover { background: rgba(0, 255, 204, 0.35); box-shadow: 0 0 12px var(--hud-cyan); }
+        .reset-btn { border-color: var(--hud-orange); background: rgba(255, 69, 0, 0.2); }
+        .voice-btn.active, .mic-btn.active { background: var(--hud-pink); box-shadow: 0 0 12px var(--hud-pink); }
+        .mic-btn.active { background: var(--hud-orange); border-color: var(--hud-orange); animation: pulse-mic 1.4s infinite; }
+
+        @keyframes pulse-mic {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.08); filter: brightness(1.3); }
+            100% { transform: scale(1); filter: brightness(1); }
         }
-        .clip-btn:hover {
-            background: rgba(0, 255, 204, 0.3);
-            box-shadow: 0 0 10px #00ffcc;
-        }
-        .reset-btn {
-            border-color: var(--hud-orange);
-            background: rgba(0, 136, 255, 0.2);
-        }
-        .voice-btn.active, .mic-btn.active {
-            background: var(--hud-pink);
-            box-shadow: 0 0 10px var(--hud-pink);
-        }
-        .mic-btn.active {
-            background: var(--hud-orange);
-            border-color: var(--hud-orange);
-            box-shadow: 0 0 15px var(--hud-orange);
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
-        }
+
+        /* ==========================================================================
+           6. PANELES LATERALES CON MONITOREO DINÁMICO DE CPU Y RED
+           ========================================================================== */
         .hud-panel-left, .hud-panel-right {
-            padding: 15px;
+            padding: 14px;
             font-size: 0.85rem;
             border-color: rgba(0, 136, 255, 0.3);
             display: flex;
@@ -217,32 +273,24 @@
             gap: 12px;
             color: var(--hud-text);
             overflow-y: auto;
+            background: var(--hud-panel-bg);
         }
+
         .hud-panel-left { grid-area: left-panel; border-right: 1px dashed var(--hud-orange); }
         .hud-panel-right { grid-area: right-panel; border-left: 1px dashed var(--hud-orange); }
-        
+
         .stat-box {
-            background: rgba(0, 136, 255, 0.05);
+            background: rgba(0, 136, 255, 0.04);
             border: 1px solid var(--hud-pink);
             padding: 10px;
-            border-radius: 4px;
-            box-shadow: inset 0 0 8px rgba(0,229,255,0.2);
+            border-radius: 6px;
+            box-shadow: inset 0 0 10px rgba(0,229,255,0.15);
+            position: relative;
         }
-        .stat-bar {
-            height: 6px;
-            background: rgba(0, 40, 80, 0.6);
-            margin-top: 6px;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .stat-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--hud-orange), var(--hud-pink));
-            width: 85%;
-        }
+
         .widget-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-family: var(--font-tech);
+            font-size: 0.72rem;
             color: #fff;
             letter-spacing: 1px;
             margin-bottom: 6px;
@@ -250,110 +298,86 @@
             justify-content: space-between;
             align-items: center;
         }
-        .bookmarks-list {
+
+        .todo-list, .bookmarks-list, .sessions-list, .plugin-list {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            max-height: 120px;
+            max-height: 110px;
             overflow-y: auto;
+            padding-right: 2px;
         }
-        .bookmark-item {
+
+        .todo-item, .bookmark-item, .session-item, .plugin-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 229, 255, 0.4);
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(0, 229, 255, 0.35);
             padding: 5px 8px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--hud-text);
-            text-decoration: none;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
-        .bookmark-item:hover {
-            border-color: var(--hud-orange);
-            color: #fff;
+
+        .todo-item:hover, .bookmark-item:hover, .session-item:hover, .plugin-item:hover {
+            border-color: var(--hud-pink);
             background: rgba(0, 136, 255, 0.15);
         }
-        .bookmark-add-form {
-            display: flex;
-            gap: 5px;
-            margin-top: 5px;
-        }
-        .bookmark-add-form input {
-            flex: 1;
+
+        .todo-item.completed span { text-decoration: line-through; opacity: 0.55; }
+        .item-delete, .bm-delete, .session-delete { background: transparent; border: none; color: var(--hud-orange); cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+
+        .input-group-mini { display: flex; gap: 5px; margin-top: 6px; }
+        .input-group-mini input { flex: 1; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--hud-pink); border-radius: 4px; color: #fff; padding: 5px 8px; font-size: 0.75rem; outline: none; }
+        .input-group-mini button { background: var(--hud-orange); border: none; color: #fff; padding: 5px 9px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; font-family: var(--font-tech); }
+
+        .lofi-input-group { display: flex; gap: 6px; }
+        .lofi-input-group input { flex: 1; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--hud-pink); border-radius: 4px; color: #fff; padding: 6px; font-size: 0.75rem; outline: none; }
+        .lofi-btn { background: rgba(0, 136, 255, 0.25); border: 1px solid var(--hud-orange); color: #fff; padding: 6px 10px; font-family: var(--font-tech); font-size: 0.65rem; border-radius: 4px; cursor: pointer; }
+
+        /* Barras de monitoreo dinámicas avanzadas */
+        .monitor-bar-container {
+            width: 100%;
             background: rgba(0,0,0,0.6);
             border: 1px solid var(--hud-pink);
-            border-radius: 3px;
-            color: #fff;
-            padding: 4px 6px;
-            font-size: 0.75rem;
-            outline: none;
-        }
-        .bookmark-add-form button {
-            background: var(--hud-orange);
-            border: none;
-            color: #fff;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .lofi-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .lofi-input-group {
-            display: flex;
-            gap: 4px;
-        }
-        .lofi-input-group input {
-            flex: 1;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--hud-pink);
-            border-radius: 3px;
-            color: #fff;
-            padding: 5px;
-            font-size: 0.75rem;
-            outline: none;
-        }
-        .lofi-btn {
-            background: rgba(0, 136, 255, 0.2);
-            border: 1px solid var(--hud-orange);
-            color: #fff;
-            padding: 6px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
+            height: 8px;
             border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
+            margin-top: 4px;
+            overflow: hidden;
+            position: relative;
         }
-        .lofi-btn:hover {
-            background: rgba(0, 136, 255, 0.5);
-            box-shadow: 0 0 8px var(--hud-orange);
+
+        .monitor-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hud-orange), var(--hud-pink));
+            width: 35%;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 8px var(--hud-pink);
         }
+
+        /* ==========================================================================
+           7. ÁREA CENTRAL DE CHAT Y SANDBOX DE CÓDIGO INTERACTIVO
+           ========================================================================== */
         .hud-chat-main {
             grid-area: chat-main;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 18px;
             position: relative;
             min-height: 0;
+            background: radial-gradient(circle at center, rgba(15, 3, 10, 0.5) 0%, rgba(5, 0, 2, 0.8) 100%);
         }
-        .hud-chat-main::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px; height: 350px;
-            border: 2px dashed rgba(0, 136, 255, 0.2);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: spin 30s linear infinite;
+
+        .chat-container-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+            min-height: 0;
+            position: relative;
         }
-        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
         .chat-messages {
             flex: 1;
             min-height: 0;
@@ -365,248 +389,364 @@
             z-index: 2;
             scroll-behavior: smooth;
         }
-        .chat-messages::-webkit-scrollbar { width: 8px; }
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 4px;
-            border: 1px solid rgba(0, 229, 255, 0.2);
+
+        /* Panel Sandbox Ocultable para Ejecución de Código Instantánea */
+        .sandbox-panel {
+            width: 45%;
+            background: rgba(2, 6, 12, 0.95);
+            border: 1px solid var(--hud-cyan);
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(0,255,204,0.2);
+            z-index: 5;
         }
+
+        .sandbox-panel.active { display: flex; }
+
+        .sandbox-header {
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            color: var(--hud-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--hud-cyan);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .sandbox-editor {
+            flex: 1;
+            background: #000;
+            color: #00ffcc;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            border: 1px solid rgba(0,255,204,0.4);
+            border-radius: 4px;
+            padding: 8px;
+            resize: none;
+            outline: none;
+            margin-bottom: 8px;
+        }
+
+        .sandbox-output {
+            height: 100px;
+            background: rgba(0, 20, 10, 0.8);
+            border: 1px dashed var(--hud-pink);
+            border-radius: 4px;
+            padding: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .chat-messages::-webkit-scrollbar { width: 7px; }
         .chat-messages::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, var(--hud-orange), var(--hud-pink));
-            border-radius: 4px;
-            box-shadow: 0 0 8px var(--hud-glow);
+            border-radius: 5px;
         }
+
         .message {
             padding: 12px 16px;
-            border-radius: 6px;
-            max-width: 80%;
+            border-radius: 8px;
+            max-width: 86%;
             line-height: 1.5;
             font-size: 0.95rem;
-            backdrop-filter: blur(4px);
-            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(6px);
             word-break: break-word;
-            white-space: pre-wrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: fadeInMsg 0.3s ease-out;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .user {
-            background: linear-gradient(135deg, rgba(0, 136, 255, 0.4), rgba(0, 68, 128, 0.5));
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.45), rgba(0, 68, 128, 0.6));
             border: 1px solid var(--hud-orange);
             color: #fff;
             align-self: flex-end;
-            box-shadow: 0 0 10px rgba(0,136,255,0.3);
+            white-space: pre-wrap;
         }
+
         .assistant {
-            background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 136, 255, 0.1));
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.22), rgba(0, 136, 255, 0.12));
             border: 1px solid var(--hud-pink);
             color: var(--hud-text);
             align-self: flex-start;
-            box-shadow: 0 0 10px rgba(0,229,255,0.2);
         }
+
+        .assistant pre {
+            background: rgba(2, 4, 8, 0.9) !important;
+            border: 1px solid var(--hud-pink);
+            border-radius: 6px;
+            padding: 12px;
+            position: relative;
+            margin: 10px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0,229,255,0.2);
+        }
+
+        .code-action-bar {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-btn {
+            background: rgba(0, 229, 255, 0.3);
+            border: 1px solid var(--hud-pink);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-tech);
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover { background: var(--hud-pink); box-shadow: 0 0 8px var(--hud-pink); }
+
+        .typing-cursor::after {
+            content: "▋";
+            display: inline-block;
+            animation: blink-cursor 0.7s infinite;
+            color: var(--hud-pink);
+            margin-left: 2px;
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ==========================================================================
+           8. BARRA DE ENTRADA INFERIOR Y FOOTER HUD
+           ========================================================================== */
         .hud-input-bar {
             grid-area: footer;
             border-top: 2px solid var(--hud-orange);
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            background: rgba(0, 229, 255, 0.05);
-            gap: 15px;
+            padding: 0 18px;
+            background: rgba(0, 229, 255, 0.06);
+            gap: 14px;
         }
+
         .hud-input-bar input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--hud-pink);
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 12px;
             color: #fff;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: var(--font-primary);
             font-size: 1rem;
             outline: none;
-            box-shadow: inset 0 0 8px rgba(0,229,255,0.3);
+            box-shadow: inset 0 0 8px rgba(0,229,255,0.2);
         }
-        .hud-input-bar input:focus {
-            border-color: var(--hud-orange);
-            box-shadow: 0 0 12px var(--hud-glow);
-        }
+
         .hud-input-bar button {
             background: linear-gradient(135deg, var(--hud-orange), var(--hud-pink));
             border: none;
             color: #fff;
-            padding: 12px 25px;
-            font-family: 'Orbitron', sans-serif;
+            padding: 12px 26px;
+            font-family: var(--font-tech);
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             box-shadow: 0 0 12px var(--hud-glow);
-            transition: all 0.2s;
-        }
-        .hud-input-bar button:hover {
-            filter: brightness(1.2);
-            box-shadow: 0 0 20px var(--hud-pink);
+            transition: 0.25s;
         }
 
-        /* DISEÑO RESPONSIVO PARA TELÉFONOS (MODO VERTICAL SIN GIRAR) */
-        @media(max-width: 900px) {
-            body {
-                height: 100vh;
-                overflow: auto;
-                align-items: stretch;
-            }
-            .hud-frame {
-                width: 100vw;
-                height: 100vh;
-                max-width: none;
-                border: none;
-                border-radius: 0;
-                grid-template-columns: 1fr;
-                grid-template-rows: 60px 1fr 70px;
-                grid-template-areas:
-                    "header"
-                    "chat-main"
-                    "footer";
-            }
-            .hud-panel-left, .hud-panel-right {
-                display: none;
-            }
-            .hud-header {
-                padding: 0 12px;
-            }
-            .hud-title {
-                font-size: 0.95rem;
-                letter-spacing: 1px;
-            }
-            .control-btn-group {
-                gap: 4px;
-            }
-            .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select {
-                padding: 5px 6px;
-                font-size: 0.55rem;
-            }
-            .hud-chat-main {
-                padding: 10px;
-            }
-            .message {
-                max-width: 90%;
-                font-size: 0.9rem;
-                padding: 10px 12px;
-            }
-            .hud-input-bar {
-                padding: 0 10px;
-                gap: 8px;
-            }
-            .hud-input-bar input {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-            .hud-input-bar button {
-                padding: 10px 15px;
-                font-size: 0.8rem;
-                letter-spacing: 1px;
-            }
+        .hud-input-bar button:hover { filter: brightness(1.25); box-shadow: 0 0 20px var(--hud-pink); }
+
+        .terminal-log {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--hud-cyan);
+            background: rgba(0,0,0,0.6);
+            padding: 4px 6px;
+            border-radius: 3px;
+            margin-top: 4px;
+            border-left: 2px solid var(--hud-cyan);
         }
     </style>
 </head>
 <body>
-    <div class="login-overlay" id="loginOverlay" style="display: none;">
+
+    <!-- MODAL DE CONTRASEÑA SOLO PARA J.A.R.V.I.S. -->
+    <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
-            <h2>P.A.O. // ACCESO PÚBLICO</h2>
-            <p>Introduce tu nombre para inicializar el chat:</p>
-            <input type="text" id="userNameInput" placeholder="Tu nombre..." onkeypress="if(event.key === 'Enter') startSession()" autofocus>
-            <button onclick="startSession()">CONECTAR</button>
+            <h2>ACCESO ADMINISTRADOR</h2>
+            <p>El protocolo J.A.R.V.I.S. es exclusivo para el administrador. Introduce la contraseña:</p>
+            <input type="password" id="adminPasswordInput" placeholder="Contraseña..." onkeypress="if(event.key === 'Enter') verifyAdminPassword()">
+            <div class="login-box-actions">
+                <button class="cancel-btn" onclick="cancelJarvisSelection()">CANCELAR</button>
+                <button onclick="verifyAdminPassword()">VERIFICAR</button>
+            </div>
         </div>
     </div>
 
+    <!-- MARCO PRINCIPAL HUD -->
     <div class="hud-frame">
+        <!-- CABECERA -->
         <div class="hud-header">
-            <div class="hud-title" id="hudTitleText">P.A.O. // SOLAR OS</div>
+            <div class="hud-title" id="hudTitleText">
+                <span>🛡️</span> P.A.O. // SOLAR OS v6.1
+            </div>
             <div class="control-btn-group">
-                <select id="themeSelector" class="theme-select" onchange="handleThemeSelection(this.value)">
-                    <option value="cosmic" style="background: #1a0210; color: #fff;">🌸 Cosmic</option>
-                    <option value="jarvis" style="background: #030b14; color: #b3f0ff;">⚡ J.A.R.V.I.S. (Fundador)</option>
+                <select id="modelSelector" class="model-select" title="Motor de Inteligencia Artificial">
+                    <option value="deepseek/deepseek-chat">🤖 DeepSeek V3</option>
+                    <option value="meta-llama/llama-3-70b-instruct">⚡ Llama 3 70B</option>
+                    <option value="anthropic/claude-3.5-sonnet">🧠 Claude 3.5 Sonnet</option>
+                    <option value="openai/gpt-4o-mini">✨ GPT-4o Mini</option>
                 </select>
-                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y enviar">📋 CLIP</button>
-                <button class="reset-btn" onclick="resetMemory()" title="Reiniciar sesión">🗑️</button>
-                <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Hablar">🎤 MIC</button>
+                <select id="themeSelector" class="theme-select" onchange="handleThemeSelection(this)">
+                    <option value="cosmic">🌸 Cosmic Mode (Público)</option>
+                    <option value="matrix">💻 Matrix Terminal (Público)</option>
+                    <option value="stark">🔥 Stark Reactor (Público)</option>
+                    <option value="jarvis">⚡ J.A.R.V.I.S. Protocol (ADMIN)</option>
+                </select>
+                <button class="sandbox-toggle-btn" onclick="toggleSandbox()" title="Abrir/Cerrar Sandbox de Código">💻 SANDBOX</button>
+                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y buscar errores [Alt+C]">📋 CLIP</button>
+                <button class="history-btn" onclick="createNewChatSession()" title="Crear nueva sesión [Alt+N]">➕ SESIÓN</button>
+                <button class="reset-btn" onclick="resetMemory()" title="Reiniciar memoria y sistema">🗑️</button>
+                <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Activar reconocimiento de voz [Alt+M]">🎤 MIC</button>
                 <button class="voice-btn active" id="voiceToggle" onclick="toggleVoice()">🔊 VOZ</button>
             </div>
         </div>
 
-        <!-- PANEL IZQUIERDO DINÁMICO -->
+        <!-- PANEL IZQUIERDO -->
         <div class="hud-panel-left" id="panelLeft">
-            <div class="widget-title">SYSTEM DIAGNOSTICS</div>
-            <div class="stat-box">
-                <div>CORE TEMP: 36.4°C</div>
-                <div class="stat-bar"><div class="stat-fill"></div></div>
+            <div class="widget-title">GESTIÓN DE TAREAS & TO-DO</div>
+            <div class="stat-box" style="padding: 8px;">
+                <div class="todo-list" id="todoList"></div>
+                <div class="input-group-mini">
+                    <input type="text" id="todoInput" placeholder="Nuevo recordatorio o tarea..." onkeypress="if(event.key === 'Enter') addTodoItem()">
+                    <button onclick="addTodoItem()">+</button>
+                </div>
             </div>
-            <div class="stat-box">
-                <div>SOLAR MATRIX: 99.4%</div>
-                <div class="stat-bar"><div class="stat-fill" style="width: 95%;"></div></div>
+
+            <div class="widget-title" style="margin-top: 6px;">HERRAMIENTAS / PLUGINS (T.F.C.)</div>
+            <div class="stat-box" style="padding: 8px;">
+                <div class="plugin-list" id="pluginList">
+                    <div class="plugin-item"><span>🔌 Clima en Vivo</span><span style="color:var(--hud-cyan); font-size:0.65rem;">ACTIVO</span></div>
+                    <div class="plugin-item"><span>🔌 Calculadora de Funciones</span><span style="color:var(--hud-cyan); font-size:0.65rem;">ACTIVO</span></div>
+                    <div class="plugin-item"><span>🔌 Buscador Web API</span><span style="color:var(--hud-cyan); font-size:0.65rem;">ACTIVO</span></div>
+                </div>
             </div>
-            <div class="widget-title" style="margin-top: 5px;">MÉXICO // CLIMA & HORA</div>
+
+            <div class="widget-title" style="margin-top: 6px;">MÉXICO // HORA & CLIMA</div>
             <div class="stat-box">
-                <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
-                <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: var(--hud-text);">Sincronizando...</div>
+                <div id="liveClock" style="font-family: var(--font-tech); font-size: 0.85rem; color: #fff;">00:00:00</div>
+                <div id="liveWeather" style="font-size: 0.78rem; margin-top: 3px; color: var(--hud-text);">Sincronizando satélite...</div>
+                <div class="terminal-log">SEC_KEY: PUBLIC / ADMIN</div>
             </div>
-            <div class="widget-title" style="margin-top: 5px;">REPRODUCTOR MUSICAL</div>
+
+            <div class="widget-title" style="margin-top: 6px;">REPRODUCTOR MULTIMEDIA</div>
             <div class="stat-box">
-                <div class="lofi-controls">
-                    <div class="lofi-input-group">
-                        <input type="text" id="songInput" placeholder="Busca cualquier canción..." onkeypress="if(event.key === 'Enter') playTypedSong()">
-                        <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
-                    </div>
+                <div class="lofi-input-group">
+                    <input type="text" id="songInput" placeholder="Busca canción o pista..." onkeypress="if(event.key === 'Enter') playTypedSong()">
+                    <button class="lofi-btn" onclick="playTypedSong()">▶</button>
                 </div>
             </div>
         </div>
 
+        <!-- ÁREA CENTRAL DE CHAT & SANDBOX -->
         <div class="hud-chat-main">
-            <div class="chat-messages" id="messages"></div>
+            <div class="chat-container-wrapper">
+                <div class="chat-messages" id="messages"></div>
+                
+                <!-- Panel Sandbox Interactivo -->
+                <div class="sandbox-panel" id="sandboxPanel">
+                    <div class="sandbox-header">
+                        <span>⚡ JS / HTML SANDBOX SEGURO</span>
+                        <button class="code-btn" onclick="toggleSandbox()">CERRAR [×]</button>
+                    </div>
+                    <textarea class="sandbox-editor" id="sandboxCode" placeholder="// Escribe código JavaScript aquí para ejecutarlo en tiempo real...
+console.log('Iniciando entorno P.A.O...');"></textarea>
+                    <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+                        <button class="lofi-btn" style="flex: 1; background: var(--hud-orange);" onclick="executeSandboxCode()">▶ EJECUTAR CÓDIGO</button>
+                        <button class="lofi-btn" onclick="document.getElementById('sandboxOutput').innerHTML='&gt; Consola limpia.'">LIMPIAR</button>
+                    </div>
+                    <div class="sandbox-output" id="sandboxOutput">&gt; Consola de ejecución lista.</div>
+                </div>
+            </div>
         </div>
 
-        <!-- PANEL DERECHO DINÁMICO -->
+        <!-- PANEL DERECHO -->
         <div class="hud-panel-right" id="panelRight">
-            <div class="widget-title">ACCESOS RÁPIDOS (BOOKMARKS)</div>
+            <div class="widget-title">SESIONES DE CHAT PERSISTENTES</div>
+            <div class="stat-box" style="padding: 8px;">
+                <div class="sessions-list" id="sessionsList"></div>
+            </div>
+
+            <div class="widget-title" style="margin-top: 6px;">ACCESOS RÁPIDOS & ENLACES</div>
             <div class="stat-box">
                 <div class="bookmarks-list" id="bookmarksList"></div>
-                <div class="bookmark-add-form">
+                <div class="input-group-mini">
                     <input type="text" id="bmName" placeholder="Nombre">
-                    <input type="text" id="bmUrl" placeholder="URL (https://...)">
+                    <input type="text" id="bmUrl" placeholder="URL">
                     <button onclick="addBookmark()">+</button>
                 </div>
             </div>
-            <div class="widget-title" style="margin-top: 5px;">BLOC DE NOTAS RÁPIDO</div>
-            <div class="stat-box" style="padding: 6px;">
-                <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Notas rápidas..." oninput="saveQuickPad()"></textarea>
+
+            <div class="widget-title" style="margin-top: 6px;">BLOC DE NOTAS / BUG HUNTER</div>
+            <div class="stat-box" style="padding: 8px;">
+                <textarea style="width:100%; height:65px; background:rgba(0,0,0,0.7); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:var(--font-primary); font-size:0.8rem; outline:none; resize:none; border-radius:4px;" id="quickPad" placeholder="Notas de depuración o fragmentos..." oninput="saveQuickPad()"></textarea>
+                <div style="display: flex; gap: 4px; margin-top: 5px;">
+                    <button class="lofi-btn" style="flex:1;" onclick="analyzePadContent()">ANALIZAR</button>
+                    <button class="lofi-btn" style="background: rgba(255,69,0,0.25);" onclick="document.getElementById('quickPad').value=''; saveQuickPad();">LIMPIAR</button>
+                </div>
             </div>
-            <div class="widget-title" style="margin-top: 5px;">VIBE SPECTRUM</div>
-            <div class="stat-box" style="border-color: var(--hud-orange);">
-                <div style="color: var(--hud-orange);">● PRIMARY FREQUENCY</div>
-                <div style="color: var(--hud-pink);">● ACCENT NEON</div>
+
+            <div class="widget-title" style="margin-top: 6px;">DIAGNÓSTICO & RENDIMIENTO</div>
+            <div class="stat-box">
+                <div style="font-size: 0.75rem; display: flex; justify-content: space-between;"><span>CPU USAGE:</span> <span id="cpuVal" style="color: var(--hud-cyan);">24.2%</span></div>
+                <div class="monitor-bar-container"><div class="monitor-bar-fill" id="cpuBar"></div></div>
+
+                <div style="font-size: 0.75rem; display: flex; justify-content: space-between; margin-top: 6px;"><span>TRÁFICO RED:</span> <span id="netVal" style="color: var(--hud-cyan);">1.4 MB/s</span></div>
+                <div class="monitor-bar-container"><div class="monitor-bar-fill" id="netBar" style="width: 48%;"></div></div>
             </div>
         </div>
 
+        <!-- BARRA INFERIOR / ENTRADA -->
         <div class="hud-input-bar">
-            <input type="text" id="userInput" placeholder="Introduce comandos o mensajes..." onkeypress="if(event.key === 'Enter') sendMessage()">
-            <button onclick="sendMessage()" id="sendBtn">EJECUTAR</button>
+            <input type="text" id="userInput" placeholder="Introduce comandos, consultas, traducciones o fragmentos de código..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()">EJECUTAR</button>
         </div>
     </div>
 
+    <!-- SCRIPT PRINCIPAL DE CONTROL E INTEGRACIÓN DE MÓDULOS -->
     <script>
+        let sessions = [];
+        let currentSessionId = null;
         let history = [];
         let voiceEnabled = true;
         let recognition = null;
         let isListening = false;
         let forcedFemaleVoice = null;
         let forcedJarvisVoice = null;
-        let currentUserName = "";
+        let audioCtx = null;
 
-        // CONTRASEÑA DE FUNDADOR CONFIGURADA
-        const FOUNDER_PASSWORD = "1215Mc";
+        const ADMIN_PASSWORD = "1215Mc";
+        let previousTheme = "cosmic";
 
         let defaultBookmarks = [
-            { name: "GitHub", url: "https://github.com" },
-            { name: "OpenRouter", url: "https://openrouter.ai" },
-            { name: "Google Docs", url: "https://docs.google.com" },
-            { name: "Node.js Docs", url: "https://nodejs.org/docs" }
+            { name: "Google Drive", url: "https://drive.google.com" },
+            { name: "Gmail", url: "https://mail.google.com" },
+            { name: "Microsoft Word", url: "https://word.new" },
+            { name: "Microsoft Excel", url: "https://excel.new" },
+            { name: "GitHub", url: "https://github.com" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -615,212 +755,352 @@
                 window.speechSynthesis.onvoiceschanged = loadVoices;
             }
 
-            const savedTheme = localStorage.getItem('pao_theme');
-            if (savedTheme === 'jarvis' && localStorage.getItem('is_founder') === 'true') {
-                document.documentElement.setAttribute('data-theme', 'jarvis');
-                const selector = document.getElementById('themeSelector');
-                if (selector) selector.value = 'jarvis';
-                document.getElementById('hudTitleText').innerText = "J.A.R.V.I.S. // PROTOCOL";
-                applyJarvisPanels(true);
-                configureJarvisVoiceStyle();
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-                localStorage.setItem('pao_theme', 'cosmic');
-                localStorage.removeItem('is_founder');
-                document.getElementById('hudTitleText').innerText = "P.A.O. // SOLAR OS";
-                applyJarvisPanels(false);
-            }
+            const savedTheme = localStorage.getItem('pao_theme') || 'cosmic';
+            previousTheme = savedTheme === 'jarvis' ? 'cosmic' : savedTheme;
+            applyTheme(savedTheme, false);
 
-            const savedName = localStorage.getItem('pao_username');
-            const savedHistory = localStorage.getItem('pao_history');
-            const savedPad = localStorage.getItem('pao_quickpad');
-            
-            if (savedPad) document.getElementById('quickPad').value = savedPad;
+            loadSessionsData();
             renderBookmarks();
+            renderTodoList();
 
             updateClock();
             setInterval(updateClock, 1000);
             loadWeather();
+            startDynamicMonitoring();
 
-            if (savedName) {
-                currentUserName = savedName;
-                document.getElementById('loginOverlay').style.display = 'none';
-                if (savedHistory) {
-                    try {
-                        history = JSON.parse(savedHistory);
-                        renderHistory();
-                    } catch(e) { history = []; }
-                }
-                if (history.length === 0) {
-                    const welcomeText = `¡Hola de nuevo, ${currentUserName}! Sistema listo y operando al 100%. ✨`;
-                    appendMessage('assistant', welcomeText, false);
-                    history.push({ role: "assistant", content: welcomeText });
-                    saveState();
-                }
-                scrollToBottom();
+            const savedPad = localStorage.getItem('pao_quickpad');
+            if (savedPad) document.getElementById('quickPad').value = savedPad;
+
+            if (sessions.length === 0) {
+                createNewChatSession(false);
+                const welcomeText = "¡Bienvenido al sistema público P.A.O.! Los temas Cosmic, Matrix y Stark están disponibles para todo público.";
+                appendMessage('assistant', welcomeText, true, true);
             } else {
-                document.getElementById('loginOverlay').style.display = 'flex';
+                loadSession(sessions[0].id);
             }
+
+            initAudioContext();
+            setupSpeechRecognition();
+            setupGlobalHotkeys();
         });
 
-        function handleThemeSelection(themeName) {
-            const selector = document.getElementById('themeSelector');
+        function setupGlobalHotkeys() {
+            window.addEventListener('keydown', (e) => {
+                if (e.altKey && e.key.toLowerCase() === 'c') {
+                    e.preventDefault();
+                    readClipboardAndAnalyze();
+                } else if (e.altKey && e.key.toLowerCase() === 'n') {
+                    e.preventDefault();
+                    createNewChatSession();
+                } else if (e.altKey && e.key.toLowerCase() === 'm') {
+                    e.preventDefault();
+                    toggleMic();
+                } else if (e.altKey && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    toggleSandbox();
+                }
+            });
+        }
+
+        function initAudioContext() {
+            window.addEventListener('click', () => {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }, { once: true });
+        }
+
+        function playSciFiBeep(freq = 800, type = 'sine', duration = 0.05) {
+            if (!audioCtx) return;
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function startDynamicMonitoring() {
+            setInterval(() => {
+                const cpuValEl = document.getElementById('cpuVal');
+                const cpuBarEl = document.getElementById('cpuBar');
+                const netValEl = document.getElementById('netVal');
+                const netBarEl = document.getElementById('netBar');
+
+                if (!cpuValEl || !cpuBarEl) return;
+
+                const randomCpu = (Math.random() * 35 + 15).toFixed(1);
+                const randomNet = (Math.random() * 3.8 + 0.5).toFixed(1);
+
+                cpuValEl.innerText = randomCpu + '%';
+                cpuBarEl.style.width = randomCpu + '%';
+
+                netValEl.innerText = randomNet + ' MB/s';
+                netBarEl.style.width = (randomNet * 22) + '%';
+            }, 1500);
+        }
+
+        function getTodoList() {
+            const data = localStorage.getItem('pao_todos');
+            return data ? JSON.parse(data) : [
+                { text: "Explorar temas públicos del sistema", completed: false },
+                { text: "Acceso exclusivo a J.A.R.V.I.S. con contraseña", completed: true }
+            ];
+        }
+
+        function renderTodoList() {
+            const listEl = document.getElementById('todoList');
+            if (!listEl) return;
+            const todos = getTodoList();
+            listEl.innerHTML = '';
+            todos.forEach((item, index) => {
+                const checkedClass = item.completed ? 'completed' : '';
+                listEl.innerHTML += `<div class="todo-item ${checkedClass}">
+                    <span onclick="toggleTodoItem(${index})" style="cursor:pointer; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☑ ${item.text}</span>
+                    <button class="item-delete" onclick="removeTodoItem(${index})">×</button>
+                </div>`;
+            });
+        }
+
+        function addTodoItem() {
+            const input = document.getElementById('todoInput');
+            const val = input.value.trim();
+            if(!val) return;
+            playSciFiBeep(900);
+            let todos = getTodoList();
+            todos.push({ text: val, completed: false });
+            localStorage.setItem('pao_todos', JSON.stringify(todos));
+            input.value = '';
+            renderTodoList();
+        }
+
+        function toggleTodoItem(index) {
+            playSciFiBeep(1000);
+            let todos = getTodoList();
+            todos[index].completed = !todos[index].completed;
+            localStorage.setItem('pao_todos', JSON.stringify(todos));
+            renderTodoList();
+        }
+
+        function removeTodoItem(index) {
+            playSciFiBeep(500);
+            let todos = getTodoList();
+            todos.splice(index, 1);
+            localStorage.setItem('pao_todos', JSON.stringify(todos));
+            renderTodoList();
+        }
+
+        function loadSessionsData() {
+            const data = localStorage.getItem('pao_sessions');
+            if (data) {
+                try { sessions = JSON.parse(data); } catch(e) { sessions = []; }
+            }
+        }
+
+        function saveSessionsData() {
+            localStorage.setItem('pao_sessions', JSON.stringify(sessions));
+            renderSessionsList();
+        }
+
+        function renderSessionsList() {
+            const listEl = document.getElementById('sessionsList');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            sessions.forEach(s => {
+                let activeStyle = s.id === currentSessionId ? 'border-color: var(--hud-orange); background: rgba(0,136,255,0.25);' : '';
+                listEl.innerHTML += `<div class="session-item" style="${activeStyle}" onclick="loadSession('${s.id}')">
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:145px;">📁 ${s.title}</span>
+                    <button class="session-delete" onclick="event.stopPropagation(); deleteSession('${s.id}')">×</button>
+                </div>`;
+            });
+        }
+
+        function createNewChatSession(welcome = true) {
+            playSciFiBeep(1200);
+            const newId = 'session_' + Date.now();
+            const newSession = { id: newId, title: `Chat ${sessions.length + 1}`, history: [] };
+            sessions.unshift(newSession);
+            saveSessionsData();
+            loadSession(newId);
+
+            if (welcome) {
+                const currentTheme = localStorage.getItem('pao_theme');
+                let welcomeText = "Nueva sesión abierta. ¿En qué te ayudo?";
+                if (currentTheme === 'jarvis') welcomeText = "Sesión táctica inicializada, señor Gabriel. Enlace seguro activo.";
+                
+                appendMessage('assistant', welcomeText, false, false);
+                speakText(welcomeText);
+            }
+        }
+
+        function loadSession(id) {
+            playSciFiBeep(900);
+            currentSessionId = id;
+            const session = sessions.find(s => s.id === id);
+            if (session) {
+                history = session.history || [];
+                renderHistory();
+            }
+            renderSessionsList();
+        }
+
+        function deleteSession(id) {
+            sessions = sessions.filter(s => s.id !== id);
+            saveSessionsData();
+            if (sessions.length === 0) createNewChatSession(false);
+            else if (currentSessionId === id) loadSession(sessions[0].id);
+        }
+
+        /* ==========================================================================
+           CONTROL DE TEMAS Y PROTECCIÓN DE J.A.R.V.I.S. (SOLO ADMIN)
+           ========================================================================== */
+        function handleThemeSelection(selectEl) {
+            const themeName = selectEl.value;
+
             if (themeName === 'jarvis') {
-                if (localStorage.getItem('is_founder') === 'true') {
-                    changeTheme('jarvis');
+                if (sessionStorage.getItem('admin_authenticated') === 'true') {
+                    applyTheme('jarvis', true);
                 } else {
-                    let passwordInput = prompt("ACCESO RESTRINGIDO: Introduce la contraseña de Fundador para activar J.A.R.V.I.S.:");
-                    if (passwordInput === FOUNDER_PASSWORD) {
-                        localStorage.setItem('is_founder', 'true');
-                        changeTheme('jarvis');
-                    } else {
-                        alert("Contraseña incorrecta. Acceso denegado a J.A.R.V.I.S.");
-                        selector.value = 'cosmic';
-                    }
+                    playSciFiBeep(1100);
+                    document.getElementById('loginOverlay').style.display = 'flex';
+                    document.getElementById('adminPasswordInput').value = '';
+                    document.getElementById('adminPasswordInput').focus();
                 }
             } else {
-                localStorage.removeItem('is_founder');
-                changeTheme('cosmic');
+                previousTheme = themeName;
+                playSciFiBeep(1000);
+                applyTheme(themeName, true);
             }
         }
 
-        function applyJarvisPanels(isJarvis) {
-            const panelLeft = document.getElementById('panelLeft');
-            const panelRight = document.getElementById('panelRight');
-            const inputField = document.getElementById('userInput');
+        function verifyAdminPassword() {
+            playSciFiBeep(1300);
+            const pass = document.getElementById('adminPasswordInput').value.trim();
 
-            if (isJarvis) {
-                inputField.placeholder = "Introduzca comando táctico para J.A.R.V.I.S....";
-                panelLeft.innerHTML = `
-                    <div class="widget-title">TACTICAL TELEMETRY</div>
-                    <div class="stat-box">
-                        <div>CPU LOAD: 14.2%</div>
-                        <div class="stat-bar"><div class="stat-fill" style="width: 35%;"></div></div>
-                    </div>
-                    <div class="stat-box">
-                        <div>QUANTUM SHIELD: 100%</div>
-                        <div class="stat-bar"><div class="stat-fill" style="width: 100%;"></div></div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">NETWORK STATUS</div>
-                    <div class="stat-box">
-                        <div style="font-family: 'Orbitron'; font-size: 0.8rem; color: #00e5ff;">ENCRYPTED // SECURE</div>
-                        <div style="font-size: 0.75rem; margin-top: 4px; color: var(--hud-text);">LATENCY: 14ms</div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">AUDIO STREAM (STARK LINK)</div>
-                    <div class="stat-box">
-                        <div class="lofi-controls">
-                            <div class="lofi-input-group">
-                                <input type="text" id="songInput" placeholder="Buscar pista o frecuencia..." onkeypress="if(event.key === 'Enter') playTypedSong()">
-                                <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                panelRight.innerHTML = `
-                    <div class="widget-title">GLOBAL PROTOCOLS</div>
-                    <div class="stat-box">
-                        <div class="bookmarks-list" id="bookmarksList"></div>
-                        <div class="bookmark-add-form">
-                            <input type="text" id="bmName" placeholder="Nombre">
-                            <input type="text" id="bmUrl" placeholder="URL">
-                            <button onclick="addBookmark()">+</button>
-                        </div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">TACTICAL NOTES</div>
-                    <div class="stat-box" style="padding: 6px;">
-                        <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Bitácora táctica..." oninput="saveQuickPad()"></textarea>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">SYSTEM SPECTRUM</div>
-                    <div class="stat-box" style="border-color: var(--hud-orange);">
-                        <div style="color: var(--hud-orange);">● ARC REACTOR: ACTIVE</div>
-                        <div style="color: var(--hud-pink);">● PROTOCOL: OVERRIDE</div>
-                    </div>
-                `;
+            if (pass === ADMIN_PASSWORD) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('loginOverlay').style.display = 'none';
+                applyTheme('jarvis', true);
             } else {
-                inputField.placeholder = "Introduce comandos o mensajes para P.A.O....";
-                panelLeft.innerHTML = `
-                    <div class="widget-title">SYSTEM DIAGNOSTICS</div>
-                    <div class="stat-box">
-                        <div>CORE TEMP: 36.4°C</div>
-                        <div class="stat-bar"><div class="stat-fill"></div></div>
-                    </div>
-                    <div class="stat-box">
-                        <div>SOLAR MATRIX: 99.4%</div>
-                        <div class="stat-bar"><div class="stat-fill" style="width: 95%;"></div></div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">MÉXICO // CLIMA & HORA</div>
-                    <div class="stat-box">
-                        <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
-                        <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: var(--hud-text);">Sincronizando...</div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">REPRODUCTOR MUSICAL</div>
-                    <div class="stat-box">
-                        <div class="lofi-controls">
-                            <div class="lofi-input-group">
-                                <input type="text" id="songInput" placeholder="Busca cualquier canción..." onkeypress="if(event.key === 'Enter') playTypedSong()">
-                                <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                panelRight.innerHTML = `
-                    <div class="widget-title">ACCESOS RÁPIDOS (BOOKMARKS)</div>
-                    <div class="stat-box">
-                        <div class="bookmarks-list" id="bookmarksList"></div>
-                        <div class="bookmark-add-form">
-                            <input type="text" id="bmName" placeholder="Nombre">
-                            <input type="text" id="bmUrl" placeholder="URL (https://...)">
-                            <button onclick="addBookmark()">+</button>
-                        </div>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">BLOC DE NOTAS RÁPIDO</div>
-                    <div class="stat-box" style="padding: 6px;">
-                        <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Notas rápidas..." oninput="saveQuickPad()"></textarea>
-                    </div>
-                    <div class="widget-title" style="margin-top: 5px;">VIBE SPECTRUM</div>
-                    <div class="stat-box" style="border-color: var(--hud-orange);">
-                        <div style="color: var(--hud-orange);">● PRIMARY FREQUENCY</div>
-                        <div style="color: var(--hud-pink);">● ACCENT NEON</div>
-                    </div>
-                `;
+                alert("Contraseña incorrecta. Acceso denegado a J.A.R.V.I.S.");
+                cancelJarvisSelection();
             }
-            renderBookmarks();
-            const savedPad = localStorage.getItem('pao_quickpad');
-            if (savedPad && document.getElementById('quickPad')) document.getElementById('quickPad').value = savedPad;
         }
 
-        function changeTheme(themeName) {
+        function cancelJarvisSelection() {
+            playSciFiBeep(500);
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('themeSelector').value = previousTheme;
+        }
+
+        function applyTheme(themeName, speak = true) {
             const titleElement = document.getElementById('hudTitleText');
+            const selector = document.getElementById('themeSelector');
+            if(selector) selector.value = themeName;
+            localStorage.setItem('pao_theme', themeName);
+
             if (themeName === 'jarvis') {
                 document.documentElement.setAttribute('data-theme', 'jarvis');
-                localStorage.setItem('pao_theme', 'jarvis');
-                titleElement.innerText = "J.A.R.V.I.S. // PROTOCOL";
-                applyJarvisPanels(true);
+                titleElement.innerHTML = "<span>⚡</span> J.A.R.V.I.S. // ADMIN PROTOCOL";
                 configureJarvisVoiceStyle();
-                speakText("Sistemas visuales y tácticos reconfigurados al protocolo J.A.R.V.I.S.");
+                const welcomeMsg = "Bienvenido, señor Gabriel. Protocolo J.A.R.V.I.S. activado.";
+                if (speak) {
+                    appendMessage('assistant', welcomeMsg, false, false);
+                    speakText(welcomeMsg);
+                }
+            } else if (themeName === 'matrix') {
+                document.documentElement.removeAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', 'matrix');
+                titleElement.innerHTML = "<span>💻</span> MATRIX // TERMINAL";
+                loadVoices();
+                if (speak) speakText("Terminal Matrix en línea.");
+            } else if (themeName === 'stark') {
+                document.documentElement.removeAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', 'stark');
+                titleElement.innerHTML = "<span>🔥</span> STARK // REACTOR";
+                loadVoices();
+                if (speak) speakText("Reactor Stark activado.");
             } else {
                 document.documentElement.removeAttribute('data-theme');
-                localStorage.setItem('pao_theme', 'cosmic');
-                titleElement.innerText = "P.A.O. // SOLAR OS";
-                applyJarvisPanels(false);
+                titleElement.innerHTML = "<span>🛡️</span> P.A.O. // SOLAR OS v6.1";
                 loadVoices();
-                speakText("Sistemas visuales reconfigurados en modo Cosmic HUD.");
+                if (speak) speakText("Modo Cosmic activado.");
+            }
+        }
+
+        function toggleSandbox() {
+            playSciFiBeep(1150);
+            const panel = document.getElementById('sandboxPanel');
+            panel.classList.toggle('active');
+        }
+
+        function executeSandboxCode() {
+            playSciFiBeep(1300);
+            const code = document.getElementById('sandboxCode').value;
+            const outputDiv = document.getElementById('sandboxOutput');
+            outputDiv.innerHTML = "";
+
+            const originalLog = console.log;
+            let logs = [];
+            console.log = function(...args) {
+                logs.push(args.join(' '));
+                originalLog.apply(console, args);
+            };
+
+            try {
+                let result = eval(code);
+                if (result !== undefined) logs.push(`=> ${result}`);
+                outputDiv.innerHTML = `<span style="color:#00ffcc;">> Ejecución exitosa:</span>\n` + logs.join('\n');
+            } catch (err) {
+                outputDiv.innerHTML = `<span style="color:#ff3300;">> Error de ejecución:</span>\n${err.message}`;
+            } finally {
+                console.log = originalLog;
             }
         }
 
         async function readClipboardAndAnalyze() {
+            playSciFiBeep(1100);
             try {
                 const text = await navigator.clipboard.readText();
-                if (!text.trim()) {
-                    alert("El portapapeles está vacío.");
-                    return;
-                }
-                document.getElementById('userInput').value = `Analiza el siguiente texto/código de mi portapapeles:\n\`\`\`\n${text}\n\`\`\``;
+                if (!text.trim()) return alert("El portapapeles está vacío.");
+                document.getElementById('userInput').value = `Analiza y busca errores en el siguiente código/texto:\n\`\`\`\n${text}\n\`\`\``;
                 document.getElementById('userInput').focus();
-                speakText(`Contenido del portapapeles cargado, ${currentUserName}`);
             } catch (err) {
-                alert("No se pudo leer el portapapeles. Asegúrate de dar permisos en tu navegador.");
+                alert("Permiso de portapapeles denegado por el navegador.");
             }
+        }
+
+        function downloadCodeFile(btn, ext) {
+            playSciFiBeep(1400);
+            const codeEl = btn.parentElement.nextElementSibling;
+            const codeText = codeEl.innerText;
+            
+            let filename = prompt("Introduce el nombre para el archivo corregido:", `codigo_corregido.${ext}`);
+            if (!filename) return;
+
+            const blob = new Blob([codeText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function analyzePadContent() {
+            playSciFiBeep(1050);
+            const padContent = document.getElementById('quickPad').value.trim();
+            if (!padContent) return alert("El bloc de notas está vacío.");
+            document.getElementById('userInput').value = `Revisa detalladamente este bloque de notas y optimízalo:\n\`\`\`\n${padContent}\n\`\`\``;
+            document.getElementById('userInput').focus();
         }
 
         function getBookmarks() {
@@ -833,12 +1113,16 @@
             const listDiv = document.getElementById('bookmarksList');
             if (!listDiv) return;
             listDiv.innerHTML = '';
-            bms.forEach((bm) => {
-                listDiv.innerHTML += `<a href="${bm.url}" target="_blank" class="bookmark-item"><span>📌 ${bm.name}</span> ↗</a>`;
+            bms.forEach((bm, index) => {
+                listDiv.innerHTML += `<div class="bookmark-item">
+                    <a href="${bm.url}" target="_blank" style="color:var(--hud-text); text-decoration:none; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📌 ${bm.name}</a>
+                    <button class="bm-delete" onclick="removeBookmark(${index})">×</button>
+                </div>`;
             });
         }
 
         function addBookmark() {
+            playSciFiBeep(950);
             const name = document.getElementById('bmName').value.trim();
             let url = document.getElementById('bmUrl').value.trim();
             if (!name || !url) return alert("Rellena nombre y URL.");
@@ -847,35 +1131,36 @@
             let bms = getBookmarks();
             bms.push({ name, url });
             localStorage.setItem('pao_bookmarks', JSON.stringify(bms));
-            
+            document.getElementById('bmName').value = '';
+            document.getElementById('bmUrl').value = '';
+            renderBookmarks();
+        }
+
+        function removeBookmark(index) {
+            playSciFiBeep(600);
+            let bms = getBookmarks();
+            bms.splice(index, 1);
+            localStorage.setItem('pao_bookmarks', JSON.stringify(bms));
             renderBookmarks();
         }
 
         function playAnySong(songName) {
             if (!songName) return;
-            const encodedQuery = encodeURIComponent(songName);
-            const targetUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
-            
-            window.open(targetUrl, '_blank');
-            
-            const replyText = `Reproduciendo "${songName}", ${currentUserName}. 🎶✨`;
-            appendMessage('assistant', replyText);
+            window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}`, '_blank');
+            const replyText = `Reproduciendo "${songName}". 🎶`;
+            appendMessage('assistant', replyText, false, false);
             speakText(replyText);
         }
 
         function playTypedSong() {
+            playSciFiBeep(1000);
             const songInput = document.getElementById('songInput');
-            if (songInput && songInput.value.trim()) {
-                playAnySong(songInput.value.trim());
-            }
+            if (songInput && songInput.value.trim()) playAnySong(songInput.value.trim());
         }
 
         function updateClock() {
             const clockEl = document.getElementById('liveClock');
-            if (clockEl) {
-                const now = new Date();
-                clockEl.innerText = now.toLocaleTimeString('es-MX');
-            }
+            if (clockEl) clockEl.innerText = new Date().toLocaleTimeString('es-MX');
         }
 
         async function loadWeather() {
@@ -884,24 +1169,25 @@
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.43&longitude=-99.13&current_weather=true');
                 const data = await res.json();
-                if (data && data.current_weather) {
-                    weatherEl.innerText = `CDMX: ${data.current_weather.temperature}°C`;
-                }
-            } catch(e) {
-                weatherEl.innerText = 'CDMX: 24°C';
-            }
+                if (data && data.current_weather) weatherEl.innerText = `CDMX: ${data.current_weather.temperature}°C // Plugin OK`;
+            } catch(e) { weatherEl.innerText = 'CDMX: 24°C // Sincronizado'; }
         }
 
         function saveQuickPad() {
             const pad = document.getElementById('quickPad');
-            if (pad) {
-                localStorage.setItem('pao_quickpad', pad.value);
-            }
+            if (pad) localStorage.setItem('pao_quickpad', pad.value);
         }
 
-        function saveState() {
-            localStorage.setItem('pao_username', currentUserName);
-            localStorage.setItem('pao_history', JSON.stringify(history));
+        function saveActiveSessionState() {
+            if (!currentSessionId) return;
+            const session = sessions.find(s => s.id === currentSessionId);
+            if (session) {
+                session.history = history;
+                if (history.length > 0 && session.title.startsWith('Chat ')) {
+                    session.title = history[0].content.substring(0, 15) + '...';
+                }
+                saveSessionsData();
+            }
         }
 
         function renderHistory() {
@@ -909,20 +1195,95 @@
             messagesDiv.innerHTML = '';
             history.forEach(msg => {
                 const cssClass = msg.role === 'user' ? 'user' : 'assistant';
-                messagesDiv.innerHTML += `<div class="message ${cssClass}">${escapeHTML(msg.content)}</div>`;
+                if (msg.role === 'assistant') {
+                    messagesDiv.innerHTML += `<div class="message ${cssClass}">${formatMessageContent(msg.content)}</div>`;
+                } else {
+                    messagesDiv.innerHTML += `<div class="message ${cssClass}">${escapeHTML(msg.content)}</div>`;
+                }
+            });
+            document.querySelectorAll('pre code').forEach((block) => { hljs.highlightElement(block); });
+            scrollToBottom();
+        }
+
+        function formatMessageContent(text) {
+            let formatted = text.replace(/```([a-z]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+                const escapedCode = escapeHTML(code.trim());
+                let ext = lang || 'txt';
+                if (ext === 'javascript' || ext === 'js') ext = 'js';
+                else if (ext === 'html') ext = 'html';
+                else if (ext === 'python' || ext === 'py') ext = 'py';
+                else if (ext === 'css') ext = 'css';
+
+                return `<pre>
+                    <div class="code-action-bar">
+                        <button class="code-btn" onclick="copyCodeBlock(this)">COPIAR</button>
+                        <button class="code-btn" onclick="downloadCodeFile(this, '${ext}')">📥 DESCARGAR</button>
+                    </div>
+                    <code class="${lang}">${escapedCode}</code>
+                </pre>`;
+            });
+            return formatted;
+        }
+
+        function copyCodeBlock(btn) {
+            playSciFiBeep(1300);
+            const codeEl = btn.parentElement.nextElementSibling;
+            navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                btn.innerText = "¡COPIADO!";
+                setTimeout(() => { btn.innerText = "COPIAR"; }, 2000);
             });
         }
 
-        function appendMessage(role, text, save = true) {
+        function appendMessage(role, text, save = true, typewriter = true) {
             const messagesDiv = document.getElementById('messages');
             const cssClass = role === 'user' ? 'user' : 'assistant';
-            messagesDiv.innerHTML += `<div class="message ${cssClass}">${escapeHTML(text)}</div>`;
-            scrollToBottom();
+            
+            if (role === 'user' || !typewriter) {
+                if (role === 'assistant') {
+                    messagesDiv.innerHTML += `<div class="message ${cssClass}">${formatMessageContent(text)}</div>`;
+                    document.querySelectorAll('pre code').forEach((block) => { hljs.highlightElement(block); });
+                } else {
+                    messagesDiv.innerHTML += `<div class="message ${cssClass}">${escapeHTML(text)}</div>`;
+                }
+                scrollToBottom();
+            } else {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${cssClass} typing-cursor`;
+                messagesDiv.appendChild(msgDiv);
+                scrollToBottom();
+
+                let i = 0;
+                const speed = 12;
+
+                if (text.includes('```')) {
+                    msgDiv.classList.remove('typing-cursor');
+                    msgDiv.innerHTML = formatMessageContent(text);
+                    document.querySelectorAll('pre code').forEach((block) => { hljs.highlightElement(block); });
+                    scrollToBottom();
+                } else {
+                    let currentText = "";
+                    const timer = setInterval(() => {
+                        if (i < text.length) {
+                            currentText += text.charAt(i);
+                            msgDiv.innerHTML = escapeHTML(currentText);
+                            if (i % 3 === 0) playSciFiBeep(1200, 'sine', 0.02);
+                            i++;
+                            scrollToBottom();
+                        } else {
+                            clearInterval(timer);
+                            msgDiv.classList.remove('typing-cursor');
+                            msgDiv.innerHTML = formatMessageContent(text);
+                            document.querySelectorAll('pre code').forEach((block) => { hljs.highlightElement(block); });
+                            scrollToBottom();
+                        }
+                    }, speed);
+                }
+            }
 
             if (save) {
                 history.push({ role: role, content: text });
-                if (history.length > 25) history = history.slice(history.length - 25);
-                saveState();
+                if (history.length > 35) history = history.slice(history.length - 35);
+                saveActiveSessionState();
             }
         }
 
@@ -933,8 +1294,10 @@
         }
 
         function resetMemory() {
-            if (confirm("¿Reiniciar enlace y borrar memoria?")) {
+            playSciFiBeep(400, 'sawtooth', 0.12);
+            if (confirm("¿Reiniciar enlace y borrar todas las sesiones y datos locales?")) {
                 localStorage.clear();
+                sessionStorage.clear();
                 location.reload();
             }
         }
@@ -944,9 +1307,9 @@
             const voices = window.speechSynthesis.getVoices();
             if (!voices || voices.length === 0) return;
 
-            const femaleKeywords = ['female', 'woman', 'lucia', 'paulina', 'mia', 'sabina', 'helena', 'laura', 'sofia', 'carmen', 'elena', 'google español', 'microsoft helena', 'microsoft laura'];
+            const femaleKeywords = ['female', 'woman', 'lucia', 'paulina', 'mia', 'sabina', 'helena', 'laura', 'sofia', 'carmen'];
             let found = voices.find(v => v.lang.startsWith('es') && femaleKeywords.some(kw => v.name.toLowerCase().includes(kw)));
-            if (!found) found = voices.find(v => v.lang.startsWith('es') && (v.name.includes('Google') || v.name.includes('Microsoft')));
+            if (!found) found = voices.find(v => v.lang.startsWith('es') && v.name.includes('Google'));
             if (!found) found = voices.find(v => v.lang.startsWith('es'));
             if (found) forcedFemaleVoice = found;
         }
@@ -956,7 +1319,7 @@
             const voices = window.speechSynthesis.getVoices();
             if (!voices || voices.length === 0) return;
 
-            const maleKeywords = ['male', 'man', 'pablo', 'raul', 'alonso', 'microsoft pablo', 'google español'];
+            const maleKeywords = ['male', 'man', 'pablo', 'raul', 'alonso', 'microsoft pablo'];
             let found = voices.find(v => v.lang.startsWith('es') && maleKeywords.some(kw => v.name.toLowerCase().includes(kw)));
             if (!found) found = voices.find(v => v.lang.startsWith('es'));
             if (found) forcedJarvisVoice = found;
@@ -964,16 +1327,14 @@
 
         function speakText(text) {
             if (!voiceEnabled || !('speechSynthesis' in window)) return;
-            
             const cleanText = text.replace(/[*#_\`~]/g, '');
             window.speechSynthesis.cancel();
             
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = 'es-MX';
+            const currentTheme = localStorage.getItem('pao_theme');
             
-            const isJarvis = document.documentElement.getAttribute('data-theme') === 'jarvis';
-            
-            if (isJarvis) {
+            if (currentTheme === 'jarvis' || currentTheme === 'stark') {
                 utterance.rate = 0.95;
                 utterance.pitch = 0.7;
                 if (forcedJarvisVoice) utterance.voice = forcedJarvisVoice;
@@ -982,8 +1343,6 @@
                 utterance.pitch = 1.1;
                 if (forcedFemaleVoice) utterance.voice = forcedFemaleVoice;
             }
-            
-            utterance.volume = 1.0;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -992,19 +1351,8 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function startSession() {
-            const inputVal = document.getElementById('userNameInput').value.trim();
-            if(!inputVal) return alert("Introduce un nombre.");
-            currentUserName = inputVal;
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('userInput').focus();
-
-            const welcomeText = `¡Hola, ${currentUserName}! Sistema listo y operando al 100%. ✨`;
-            appendMessage('assistant', welcomeText);
-            speakText(welcomeText);
-        }
-
         function toggleVoice() {
+            playSciFiBeep(800);
             voiceEnabled = !voiceEnabled;
             const btn = document.getElementById('voiceToggle');
             btn.classList.toggle('active', voiceEnabled);
@@ -1012,77 +1360,8 @@
             if (!voiceEnabled) window.speechSynthesis.cancel();
         }
 
-        function checkUniversalCommands(text) {
-            const lower = text.toLowerCase().trim();
-
-            if (lower.startsWith('pon la canción') || lower.startsWith('reproduce') || lower.startsWith('pon')) {
-                let song = text.replace(/pon la canción|reproduce|pon/gi, "").trim();
-                if (song) {
-                    playAnySong(song);
-                    return true;
-                }
-            }
-
-            let targetUrl = "";
-            let actionName = "";
-
-            if (lower.includes('abre word') || lower.includes('nuevo word') || lower.includes('documento de word')) {
-                targetUrl = "https://word.new";
-                actionName = "Microsoft Word";
-            } else if (lower.includes('abre excel') || lower.includes('nueva hoja') || lower.includes('excel')) {
-                targetUrl = "https://excel.new";
-                actionName = "Microsoft Excel";
-            } else if (lower.includes('abre powerpoint') || lower.includes('presentación')) {
-                targetUrl = "https://powerpoint.new";
-                actionName = "Microsoft PowerPoint";
-            } else if (lower.includes('abre drive') || lower.includes('google drive')) {
-                targetUrl = "https://drive.google.com";
-                actionName = "Google Drive";
-            } else if (lower.startsWith('abre youtube') || lower.startsWith('busca en youtube')) {
-                const query = text.replace(/abre youtube|busca en youtube/gi, "").trim();
-                targetUrl = query ? `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}` : "https://www.youtube.com";
-                actionName = "YouTube";
-            } else if (lower.startsWith('abre google') || lower.startsWith('busca en google')) {
-                const query = text.replace(/abre google|busca en google/gi, "").trim();
-                targetUrl = query ? `https://www.google.com/search?q=${encodeURIComponent(query)}` : "https://www.google.com";
-                actionName = "Google";
-            } else if (lower.startsWith('abre github')) {
-                const query = text.replace(/abre github/gi, "").trim();
-                targetUrl = query ? `https://github.com/search?q=${encodeURIComponent(query)}` : "https://github.com";
-                actionName = "GitHub";
-            } else if (lower.startsWith('abre wikipedia') || lower.startsWith('busca en wikipedia')) {
-                const query = text.replace(/abre wikipedia|busca en wikipedia/gi, "").trim();
-                targetUrl = query ? `https://es.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}` : "https://es.wikipedia.org";
-                actionName = "Wikipedia";
-            } else if (lower.startsWith('abre') || lower.startsWith('entra a') || lower.startsWith('visita')) {
-                let site = text.replace(/abre|entra a|visita|el sitio|la página/gi, "").trim();
-                if (site) {
-                    if (!site.startsWith('http://') && !site.startsWith('https://')) {
-                        if (!site.includes('.')) {
-                            targetUrl = `https://www.google.com/search?q=${encodeURIComponent(site)}`;
-                            actionName = site;
-                        } else {
-                            targetUrl = "https://" + site;
-                            actionName = site;
-                        }
-                    } else {
-                        targetUrl = site;
-                        actionName = site;
-                    }
-                }
-            }
-
-            if (targetUrl) {
-                window.open(targetUrl, '_blank');
-                const replyText = `Abriendo ${actionName}, ${currentUserName}. 🚀✨`;
-                appendMessage('assistant', replyText);
-                speakText(replyText);
-                return true;
-            }
-            return false;
-        }
-
         async function sendMessage() {
+            playSciFiBeep(1000);
             const input = document.getElementById('userInput');
             const text = input.value.trim();
             if (!text) return;
@@ -1090,52 +1369,70 @@
             input.value = '';
             appendMessage('user', text);
 
-            if (checkUniversalCommands(text)) {
-                return;
-            }
+            const selectedModel = document.getElementById('modelSelector').value;
+            const currentTheme = localStorage.getItem('pao_theme');
 
             try {
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, history: history.slice(-10) })
+                    body: JSON.stringify({ 
+                        message: text, 
+                        history: history.slice(-12),
+                        model: selectedModel,
+                        personality: currentTheme
+                    })
                 });
 
                 const data = await response.json();
                 if (data && data.reply) {
-                    appendMessage('assistant', data.reply);
+                    appendMessage('assistant', data.reply, true, true);
                     speakText(data.reply);
                 } else {
-                    appendMessage('assistant', '⚠️ Error de enlace con OpenRouter.');
+                    appendMessage('assistant', '⚠️ Error de enlace con el núcleo de IA.', true, true);
                 }
             } catch (err) {
-                appendMessage('assistant', '⚠️ Error crítico de red.');
+                appendMessage('assistant', '⚠️ Error crítico de red o servidor.', true, true);
             }
         }
 
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        function setupSpeechRecognition() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return;
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
             recognition = new SpeechRecognition();
             recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
             recognition.onresult = function(event) {
-                document.getElementById('userInput').value = event.results[0][0].transcript;
+                const transcript = event.results[0][0].transcript.trim();
+                if (transcript) {
+                    document.getElementById('userInput').value = transcript;
+                    sendMessage();
+                }
                 stopListening();
-                sendMessage();
             };
-            recognition.onerror = () => stopListening();
-            recognition.onend = () => stopListening();
+
+            recognition.onerror = () => { stopListening(); };
+            recognition.onend = () => { stopListening(); };
         }
 
         function toggleMic() {
-            if (!recognition) return alert('No soportado en este navegador.');
+            playSciFiBeep(900);
+            if (!recognition) return alert('Reconocimiento de voz no soportado en este navegador.');
+            
             if (isListening) {
-                recognition.stop();
+                try { recognition.stop(); } catch(e){}
                 stopListening();
             } else {
-                recognition.start();
-                isListening = true;
-                document.getElementById('micBtn').classList.add('active');
-                document.getElementById('micBtn').innerText = "🔴 ESCUCHANDO...";
+                try {
+                    recognition.start();
+                    isListening = true;
+                    const micBtn = document.getElementById('micBtn');
+                    micBtn.classList.add('active');
+                    micBtn.innerText = "🔴 ESCUCHANDO...";
+                } catch(e) { stopListening(); }
             }
         }
 
