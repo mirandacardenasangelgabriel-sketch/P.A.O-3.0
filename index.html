@@ -12,7 +12,18 @@
             --hud-red: #cc0033;
             --hud-glow: rgba(255, 69, 0, 0.6);
             --hud-bg: rgba(15, 5, 10, 0.9);
+            --hud-text: #ffccd5;
         }
+
+        [data-theme="jarvis"] {
+            --hud-pink: #00e5ff;
+            --hud-orange: #0088ff;
+            --hud-red: #00ffe1;
+            --hud-glow: rgba(0, 229, 255, 0.5);
+            --hud-bg: rgba(3, 11, 20, 0.95);
+            --hud-text: #b3f0ff;
+        }
+
         body {
             font-family: 'Rajdhani', sans-serif;
             background: radial-gradient(circle at center, #260515 0%, #0a0104 100%);
@@ -22,8 +33,14 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: #ffccd5;
+            color: var(--hud-text);
+            transition: background 0.3s ease;
         }
+
+        [data-theme="jarvis"] body {
+            background: radial-gradient(circle at center, #021a2e 0%, #00050a 100%);
+        }
+
         body::before {
             content: " ";
             display: block;
@@ -43,10 +60,13 @@
             align-items: center;
             z-index: 10000;
         }
+        [data-theme="jarvis"] .login-overlay {
+            background: radial-gradient(circle at center, #02121f 0%, #000205 100%);
+        }
         .login-box {
             background: var(--hud-bg);
             border: 2px solid var(--hud-orange);
-            box-shadow: 0 0 35px var(--hud-glow), inset 0 0 20px rgba(255, 20, 147, 0.2);
+            box-shadow: 0 0 35px var(--hud-glow), inset 0 0 20px rgba(0, 229, 255, 0.2);
             padding: 40px;
             border-radius: 12px;
             text-align: center;
@@ -65,7 +85,7 @@
             letter-spacing: 2px;
         }
         .login-box p {
-            color: #ff99b3;
+            color: var(--hud-text);
             font-size: 0.95rem;
             margin: 0;
         }
@@ -79,7 +99,7 @@
             font-size: 1.1rem;
             outline: none;
             text-align: center;
-            box-shadow: inset 0 0 8px rgba(255,20,147,0.3);
+            box-shadow: inset 0 0 8px rgba(0,229,255,0.3);
         }
         .login-box input:focus {
             border-color: var(--hud-orange);
@@ -108,7 +128,7 @@
             height: 90vh;
             background: var(--hud-bg);
             border: 2px solid var(--hud-orange);
-            box-shadow: 0 0 25px var(--hud-glow), inset 0 0 30px rgba(255, 20, 147, 0.15);
+            box-shadow: 0 0 25px var(--hud-glow), inset 0 0 30px rgba(0, 229, 255, 0.15);
             border-radius: 12px;
             display: grid;
             grid-template-columns: 280px 1fr 280px;
@@ -126,7 +146,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 25px;
-            background: linear-gradient(90deg, rgba(255,20,147,0.1), rgba(255,69,0,0.2), rgba(255,20,147,0.1));
+            background: linear-gradient(90deg, rgba(0,229,255,0.1), rgba(0,136,255,0.2), rgba(0,229,255,0.1));
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 2px;
             color: #fff;
@@ -135,7 +155,7 @@
         .hud-title {
             font-size: 1.2rem;
             font-weight: 900;
-            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            background: linear-gradient(90deg, var(--hud-pink), var(--hud-orange));
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -145,8 +165,8 @@
             align-items: center;
             gap: 8px;
         }
-        .voice-btn, .mic-btn, .reset-btn, .clip-btn {
-            background: rgba(255, 20, 147, 0.2);
+        .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select {
+            background: rgba(0, 229, 255, 0.15);
             border: 1px solid var(--hud-pink);
             color: #fff;
             padding: 6px 10px;
@@ -155,6 +175,10 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 0.65rem;
             transition: all 0.2s;
+            outline: none;
+        }
+        .theme-select {
+            background: rgba(0, 136, 255, 0.2);
         }
         .clip-btn {
             border-color: #00ffcc;
@@ -167,7 +191,7 @@
         }
         .reset-btn {
             border-color: var(--hud-orange);
-            background: rgba(255, 69, 0, 0.2);
+            background: rgba(0, 136, 255, 0.2);
         }
         .voice-btn.active, .mic-btn.active {
             background: var(--hud-pink);
@@ -187,26 +211,26 @@
         .hud-panel-left, .hud-panel-right {
             padding: 15px;
             font-size: 0.85rem;
-            border-color: rgba(255, 69, 0, 0.3);
+            border-color: rgba(0, 136, 255, 0.3);
             display: flex;
             flex-direction: column;
             gap: 12px;
-            color: #ff99b3;
+            color: var(--hud-text);
             overflow-y: auto;
         }
         .hud-panel-left { grid-area: left-panel; border-right: 1px dashed var(--hud-orange); }
         .hud-panel-right { grid-area: right-panel; border-left: 1px dashed var(--hud-orange); }
         
         .stat-box {
-            background: rgba(255, 69, 0, 0.05);
+            background: rgba(0, 136, 255, 0.05);
             border: 1px solid var(--hud-pink);
             padding: 10px;
             border-radius: 4px;
-            box-shadow: inset 0 0 8px rgba(255,20,147,0.2);
+            box-shadow: inset 0 0 8px rgba(0,229,255,0.2);
         }
         .stat-bar {
             height: 6px;
-            background: #400;
+            background: rgba(0, 40, 80, 0.6);
             margin-top: 6px;
             border-radius: 3px;
             overflow: hidden;
@@ -238,18 +262,18 @@
             justify-content: space-between;
             align-items: center;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 20, 147, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.4);
             padding: 5px 8px;
             border-radius: 4px;
             font-size: 0.8rem;
-            color: #ffccd5;
+            color: var(--hud-text);
             text-decoration: none;
             transition: 0.2s;
         }
         .bookmark-item:hover {
             border-color: var(--hud-orange);
             color: #fff;
-            background: rgba(255, 69, 0, 0.15);
+            background: rgba(0, 136, 255, 0.15);
         }
         .bookmark-add-form {
             display: flex;
@@ -295,7 +319,7 @@
             outline: none;
         }
         .lofi-btn {
-            background: rgba(255, 69, 0, 0.2);
+            background: rgba(0, 136, 255, 0.2);
             border: 1px solid var(--hud-orange);
             color: #fff;
             padding: 6px;
@@ -307,7 +331,7 @@
             text-align: center;
         }
         .lofi-btn:hover {
-            background: var(--hud-orange);
+            background: rgba(0, 136, 255, 0.5);
             box-shadow: 0 0 8px var(--hud-orange);
         }
         .hud-chat-main {
@@ -324,7 +348,7 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 350px; height: 350px;
-            border: 2px dashed rgba(255, 69, 0, 0.15);
+            border: 2px dashed rgba(0, 136, 255, 0.2);
             border-radius: 50%;
             pointer-events: none;
             animation: spin 30s linear infinite;
@@ -345,7 +369,7 @@
         .chat-messages::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 4px;
-            border: 1px solid rgba(255, 20, 147, 0.2);
+            border: 1px solid rgba(0, 229, 255, 0.2);
         }
         .chat-messages::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, var(--hud-orange), var(--hud-pink));
@@ -365,18 +389,18 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .user {
-            background: linear-gradient(135deg, rgba(255, 69, 0, 0.4), rgba(204, 0, 51, 0.5));
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.4), rgba(0, 68, 128, 0.5));
             border: 1px solid var(--hud-orange);
             color: #fff;
             align-self: flex-end;
-            box-shadow: 0 0 10px rgba(255,69,0,0.3);
+            box-shadow: 0 0 10px rgba(0,136,255,0.3);
         }
         .assistant {
-            background: linear-gradient(135deg, rgba(255, 20, 147, 0.2), rgba(255, 105, 180, 0.1));
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 136, 255, 0.1));
             border: 1px solid var(--hud-pink);
-            color: #ffccd5;
+            color: var(--hud-text);
             align-self: flex-start;
-            box-shadow: 0 0 10px rgba(255,20,147,0.2);
+            box-shadow: 0 0 10px rgba(0,229,255,0.2);
         }
         .hud-input-bar {
             grid-area: footer;
@@ -384,7 +408,7 @@
             display: flex;
             align-items: center;
             padding: 0 20px;
-            background: rgba(255, 20, 147, 0.05);
+            background: rgba(0, 229, 255, 0.05);
             gap: 15px;
         }
         .hud-input-bar input {
@@ -397,7 +421,7 @@
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             outline: none;
-            box-shadow: inset 0 0 8px rgba(255,20,147,0.3);
+            box-shadow: inset 0 0 8px rgba(0,229,255,0.3);
         }
         .hud-input-bar input:focus {
             border-color: var(--hud-orange);
@@ -442,7 +466,7 @@
                     "footer";
             }
             .hud-panel-left, .hud-panel-right {
-                display: none; /* Se ocultan paneles laterales en móvil para priorizar el chat */
+                display: none;
             }
             .hud-header {
                 padding: 0 12px;
@@ -454,7 +478,7 @@
             .control-btn-group {
                 gap: 4px;
             }
-            .voice-btn, .mic-btn, .reset-btn, .clip-btn {
+            .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select {
                 padding: 5px 6px;
                 font-size: 0.55rem;
             }
@@ -485,8 +509,8 @@
 <body>
     <div class="login-overlay" id="loginOverlay" style="display: none;">
         <div class="login-box">
-            <h2>P.A.O. // ACCESO HUD</h2>
-            <p>Introduce tu nombre para inicializar el protocolo de enlace:</p>
+            <h2>P.A.O. // ACCESO PÚBLICO</h2>
+            <p>Introduce tu nombre para inicializar el chat:</p>
             <input type="text" id="userNameInput" placeholder="Tu nombre..." onkeypress="if(event.key === 'Enter') startSession()" autofocus>
             <button onclick="startSession()">CONECTAR</button>
         </div>
@@ -494,16 +518,21 @@
 
     <div class="hud-frame">
         <div class="hud-header">
-            <div class="hud-title">P.A.O. // SOLAR OS</div>
+            <div class="hud-title" id="hudTitleText">P.A.O. // SOLAR OS</div>
             <div class="control-btn-group">
-                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y enviar a P.A.O.">📋 CLIP</button>
+                <select id="themeSelector" class="theme-select" onchange="handleThemeSelection(this.value)">
+                    <option value="cosmic" style="background: #1a0210; color: #fff;">🌸 Cosmic</option>
+                    <option value="jarvis" style="background: #030b14; color: #b3f0ff;">⚡ J.A.R.V.I.S. (Fundador)</option>
+                </select>
+                <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y enviar">📋 CLIP</button>
                 <button class="reset-btn" onclick="resetMemory()" title="Reiniciar sesión">🗑️</button>
                 <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Hablar">🎤 MIC</button>
                 <button class="voice-btn active" id="voiceToggle" onclick="toggleVoice()">🔊 VOZ</button>
             </div>
         </div>
 
-        <div class="hud-panel-left">
+        <!-- PANEL IZQUIERDO DINÁMICO -->
+        <div class="hud-panel-left" id="panelLeft">
             <div class="widget-title">SYSTEM DIAGNOSTICS</div>
             <div class="stat-box">
                 <div>CORE TEMP: 36.4°C</div>
@@ -516,7 +545,7 @@
             <div class="widget-title" style="margin-top: 5px;">MÉXICO // CLIMA & HORA</div>
             <div class="stat-box">
                 <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
-                <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: #ffccd5;">Sincronizando...</div>
+                <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: var(--hud-text);">Sincronizando...</div>
             </div>
             <div class="widget-title" style="margin-top: 5px;">REPRODUCTOR MUSICAL</div>
             <div class="stat-box">
@@ -533,7 +562,8 @@
             <div class="chat-messages" id="messages"></div>
         </div>
 
-        <div class="hud-panel-right">
+        <!-- PANEL DERECHO DINÁMICO -->
+        <div class="hud-panel-right" id="panelRight">
             <div class="widget-title">ACCESOS RÁPIDOS (BOOKMARKS)</div>
             <div class="stat-box">
                 <div class="bookmarks-list" id="bookmarksList"></div>
@@ -545,17 +575,17 @@
             </div>
             <div class="widget-title" style="margin-top: 5px;">BLOC DE NOTAS RÁPIDO</div>
             <div class="stat-box" style="padding: 6px;">
-                <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:#ffccd5; padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Notas rápidas..." oninput="saveQuickPad()"></textarea>
+                <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Notas rápidas..." oninput="saveQuickPad()"></textarea>
             </div>
             <div class="widget-title" style="margin-top: 5px;">VIBE SPECTRUM</div>
             <div class="stat-box" style="border-color: var(--hud-orange);">
-                <div style="color: #ff4500;">● RED FREQUENCY</div>
-                <div style="color: #ff1493;">● NEON PINK</div>
+                <div style="color: var(--hud-orange);">● PRIMARY FREQUENCY</div>
+                <div style="color: var(--hud-pink);">● ACCENT NEON</div>
             </div>
         </div>
 
         <div class="hud-input-bar">
-            <input type="text" id="userInput" placeholder="Introduce comandos o mensajes para P.A.O...." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <input type="text" id="userInput" placeholder="Introduce comandos o mensajes..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()" id="sendBtn">EJECUTAR</button>
         </div>
     </div>
@@ -566,7 +596,11 @@
         let recognition = null;
         let isListening = false;
         let forcedFemaleVoice = null;
+        let forcedJarvisVoice = null;
         let currentUserName = "";
+
+        // CONTRASEÑA DE FUNDADOR CONFIGURADA
+        const FOUNDER_PASSWORD = "1215Mc";
 
         let defaultBookmarks = [
             { name: "GitHub", url: "https://github.com" },
@@ -579,6 +613,22 @@
             loadVoices();
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.onvoiceschanged = loadVoices;
+            }
+
+            const savedTheme = localStorage.getItem('pao_theme');
+            if (savedTheme === 'jarvis' && localStorage.getItem('is_founder') === 'true') {
+                document.documentElement.setAttribute('data-theme', 'jarvis');
+                const selector = document.getElementById('themeSelector');
+                if (selector) selector.value = 'jarvis';
+                document.getElementById('hudTitleText').innerText = "J.A.R.V.I.S. // PROTOCOL";
+                applyJarvisPanels(true);
+                configureJarvisVoiceStyle();
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('pao_theme', 'cosmic');
+                localStorage.removeItem('is_founder');
+                document.getElementById('hudTitleText').innerText = "P.A.O. // SOLAR OS";
+                applyJarvisPanels(false);
             }
 
             const savedName = localStorage.getItem('pao_username');
@@ -602,7 +652,7 @@
                     } catch(e) { history = []; }
                 }
                 if (history.length === 0) {
-                    const welcomeText = `¡Hola de nuevo, ${currentUserName}! 🌸 P.A.O. lista y operando al 100%. ✨`;
+                    const welcomeText = `¡Hola de nuevo, ${currentUserName}! Sistema listo y operando al 100%. ✨`;
                     appendMessage('assistant', welcomeText, false);
                     history.push({ role: "assistant", content: welcomeText });
                     saveState();
@@ -612,6 +662,151 @@
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
+
+        function handleThemeSelection(themeName) {
+            const selector = document.getElementById('themeSelector');
+            if (themeName === 'jarvis') {
+                if (localStorage.getItem('is_founder') === 'true') {
+                    changeTheme('jarvis');
+                } else {
+                    let passwordInput = prompt("ACCESO RESTRINGIDO: Introduce la contraseña de Fundador para activar J.A.R.V.I.S.:");
+                    if (passwordInput === FOUNDER_PASSWORD) {
+                        localStorage.setItem('is_founder', 'true');
+                        changeTheme('jarvis');
+                    } else {
+                        alert("Contraseña incorrecta. Acceso denegado a J.A.R.V.I.S.");
+                        selector.value = 'cosmic';
+                    }
+                }
+            } else {
+                localStorage.removeItem('is_founder');
+                changeTheme('cosmic');
+            }
+        }
+
+        function applyJarvisPanels(isJarvis) {
+            const panelLeft = document.getElementById('panelLeft');
+            const panelRight = document.getElementById('panelRight');
+            const inputField = document.getElementById('userInput');
+
+            if (isJarvis) {
+                inputField.placeholder = "Introduzca comando táctico para J.A.R.V.I.S....";
+                panelLeft.innerHTML = `
+                    <div class="widget-title">TACTICAL TELEMETRY</div>
+                    <div class="stat-box">
+                        <div>CPU LOAD: 14.2%</div>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 35%;"></div></div>
+                    </div>
+                    <div class="stat-box">
+                        <div>QUANTUM SHIELD: 100%</div>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 100%;"></div></div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">NETWORK STATUS</div>
+                    <div class="stat-box">
+                        <div style="font-family: 'Orbitron'; font-size: 0.8rem; color: #00e5ff;">ENCRYPTED // SECURE</div>
+                        <div style="font-size: 0.75rem; margin-top: 4px; color: var(--hud-text);">LATENCY: 14ms</div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">AUDIO STREAM (STARK LINK)</div>
+                    <div class="stat-box">
+                        <div class="lofi-controls">
+                            <div class="lofi-input-group">
+                                <input type="text" id="songInput" placeholder="Buscar pista o frecuencia..." onkeypress="if(event.key === 'Enter') playTypedSong()">
+                                <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                panelRight.innerHTML = `
+                    <div class="widget-title">GLOBAL PROTOCOLS</div>
+                    <div class="stat-box">
+                        <div class="bookmarks-list" id="bookmarksList"></div>
+                        <div class="bookmark-add-form">
+                            <input type="text" id="bmName" placeholder="Nombre">
+                            <input type="text" id="bmUrl" placeholder="URL">
+                            <button onclick="addBookmark()">+</button>
+                        </div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">TACTICAL NOTES</div>
+                    <div class="stat-box" style="padding: 6px;">
+                        <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Bitácora táctica..." oninput="saveQuickPad()"></textarea>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">SYSTEM SPECTRUM</div>
+                    <div class="stat-box" style="border-color: var(--hud-orange);">
+                        <div style="color: var(--hud-orange);">● ARC REACTOR: ACTIVE</div>
+                        <div style="color: var(--hud-pink);">● PROTOCOL: OVERRIDE</div>
+                    </div>
+                `;
+            } else {
+                inputField.placeholder = "Introduce comandos o mensajes para P.A.O....";
+                panelLeft.innerHTML = `
+                    <div class="widget-title">SYSTEM DIAGNOSTICS</div>
+                    <div class="stat-box">
+                        <div>CORE TEMP: 36.4°C</div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                    <div class="stat-box">
+                        <div>SOLAR MATRIX: 99.4%</div>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 95%;"></div></div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">MÉXICO // CLIMA & HORA</div>
+                    <div class="stat-box">
+                        <div id="liveClock" style="font-family: 'Orbitron'; font-size: 0.85rem; color: #fff;">00:00:00</div>
+                        <div id="liveWeather" style="font-size: 0.8rem; margin-top: 4px; color: var(--hud-text);">Sincronizando...</div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">REPRODUCTOR MUSICAL</div>
+                    <div class="stat-box">
+                        <div class="lofi-controls">
+                            <div class="lofi-input-group">
+                                <input type="text" id="songInput" placeholder="Busca cualquier canción..." onkeypress="if(event.key === 'Enter') playTypedSong()">
+                                <button class="lofi-btn" onclick="playTypedSong()" style="padding: 4px 8px;">▶</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                panelRight.innerHTML = `
+                    <div class="widget-title">ACCESOS RÁPIDOS (BOOKMARKS)</div>
+                    <div class="stat-box">
+                        <div class="bookmarks-list" id="bookmarksList"></div>
+                        <div class="bookmark-add-form">
+                            <input type="text" id="bmName" placeholder="Nombre">
+                            <input type="text" id="bmUrl" placeholder="URL (https://...)">
+                            <button onclick="addBookmark()">+</button>
+                        </div>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">BLOC DE NOTAS RÁPIDO</div>
+                    <div class="stat-box" style="padding: 6px;">
+                        <textarea style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:'Rajdhani'; font-size:0.85rem; outline:none; resize:none;" id="quickPad" placeholder="Notas rápidas..." oninput="saveQuickPad()"></textarea>
+                    </div>
+                    <div class="widget-title" style="margin-top: 5px;">VIBE SPECTRUM</div>
+                    <div class="stat-box" style="border-color: var(--hud-orange);">
+                        <div style="color: var(--hud-orange);">● PRIMARY FREQUENCY</div>
+                        <div style="color: var(--hud-pink);">● ACCENT NEON</div>
+                    </div>
+                `;
+            }
+            renderBookmarks();
+            const savedPad = localStorage.getItem('pao_quickpad');
+            if (savedPad && document.getElementById('quickPad')) document.getElementById('quickPad').value = savedPad;
+        }
+
+        function changeTheme(themeName) {
+            const titleElement = document.getElementById('hudTitleText');
+            if (themeName === 'jarvis') {
+                document.documentElement.setAttribute('data-theme', 'jarvis');
+                localStorage.setItem('pao_theme', 'jarvis');
+                titleElement.innerText = "J.A.R.V.I.S. // PROTOCOL";
+                applyJarvisPanels(true);
+                configureJarvisVoiceStyle();
+                speakText("Sistemas visuales y tácticos reconfigurados al protocolo J.A.R.V.I.S.");
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('pao_theme', 'cosmic');
+                titleElement.innerText = "P.A.O. // SOLAR OS";
+                applyJarvisPanels(false);
+                loadVoices();
+                speakText("Sistemas visuales reconfigurados en modo Cosmic HUD.");
+            }
+        }
 
         async function readClipboardAndAnalyze() {
             try {
@@ -636,6 +831,7 @@
         function renderBookmarks() {
             const bms = getBookmarks();
             const listDiv = document.getElementById('bookmarksList');
+            if (!listDiv) return;
             listDiv.innerHTML = '';
             bms.forEach((bm) => {
                 listDiv.innerHTML += `<a href="${bm.url}" target="_blank" class="bookmark-item"><span>📌 ${bm.name}</span> ↗</a>`;
@@ -652,8 +848,6 @@
             bms.push({ name, url });
             localStorage.setItem('pao_bookmarks', JSON.stringify(bms));
             
-            document.getElementById('bmName').value = '';
-            document.getElementById('bmUrl').value = '';
             renderBookmarks();
         }
 
@@ -670,29 +864,39 @@
         }
 
         function playTypedSong() {
-            const val = document.getElementById('songInput').value.trim();
-            if (val) playAnySong(val);
+            const songInput = document.getElementById('songInput');
+            if (songInput && songInput.value.trim()) {
+                playAnySong(songInput.value.trim());
+            }
         }
 
         function updateClock() {
-            const now = new Date();
-            document.getElementById('liveClock').innerText = now.toLocaleTimeString('es-MX');
+            const clockEl = document.getElementById('liveClock');
+            if (clockEl) {
+                const now = new Date();
+                clockEl.innerText = now.toLocaleTimeString('es-MX');
+            }
         }
 
         async function loadWeather() {
+            const weatherEl = document.getElementById('liveWeather');
+            if (!weatherEl) return;
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.43&longitude=-99.13&current_weather=true');
                 const data = await res.json();
                 if (data && data.current_weather) {
-                    document.getElementById('liveWeather').innerText = `CDMX: ${data.current_weather.temperature}°C`;
+                    weatherEl.innerText = `CDMX: ${data.current_weather.temperature}°C`;
                 }
             } catch(e) {
-                document.getElementById('liveWeather').innerText = 'CDMX: 24°C';
+                weatherEl.innerText = 'CDMX: 24°C';
             }
         }
 
         function saveQuickPad() {
-            localStorage.setItem('pao_quickpad', document.getElementById('quickPad').value);
+            const pad = document.getElementById('quickPad');
+            if (pad) {
+                localStorage.setItem('pao_quickpad', pad.value);
+            }
         }
 
         function saveState() {
@@ -747,19 +951,39 @@
             if (found) forcedFemaleVoice = found;
         }
 
+        function configureJarvisVoiceStyle() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return;
+
+            const maleKeywords = ['male', 'man', 'pablo', 'raul', 'alonso', 'microsoft pablo', 'google español'];
+            let found = voices.find(v => v.lang.startsWith('es') && maleKeywords.some(kw => v.name.toLowerCase().includes(kw)));
+            if (!found) found = voices.find(v => v.lang.startsWith('es'));
+            if (found) forcedJarvisVoice = found;
+        }
+
         function speakText(text) {
             if (!voiceEnabled || !('speechSynthesis' in window)) return;
-            loadVoices();
             
             const cleanText = text.replace(/[*#_\`~]/g, '');
             window.speechSynthesis.cancel();
             
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = 'es-MX';
-            utterance.rate = 1.05;
-            utterance.pitch = 1.3;
-            if (forcedFemaleVoice) utterance.voice = forcedFemaleVoice;
             
+            const isJarvis = document.documentElement.getAttribute('data-theme') === 'jarvis';
+            
+            if (isJarvis) {
+                utterance.rate = 0.95;
+                utterance.pitch = 0.7;
+                if (forcedJarvisVoice) utterance.voice = forcedJarvisVoice;
+            } else {
+                utterance.rate = 1.0;
+                utterance.pitch = 1.1;
+                if (forcedFemaleVoice) utterance.voice = forcedFemaleVoice;
+            }
+            
+            utterance.volume = 1.0;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -775,7 +999,7 @@
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('userInput').focus();
 
-            const welcomeText = `¡Hola, ${currentUserName}! 🌸 P.A.O. lista y operando al 100%. ✨`;
+            const welcomeText = `¡Hola, ${currentUserName}! Sistema listo y operando al 100%. ✨`;
             appendMessage('assistant', welcomeText);
             speakText(welcomeText);
         }
