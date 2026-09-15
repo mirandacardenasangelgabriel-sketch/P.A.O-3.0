@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P.A.O. // ULTIMATE COSMIC HUD OS - v6.1.1</title>
+    <title>P.A.O. // ULTIMATE COSMIC HUD OS - v6.3.0</title>
     <!-- Fuentes Sci-Fi Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- Highlight.js para Sintaxis de Código -->
@@ -107,43 +107,43 @@
         }
 
         /* ==========================================================================
-           3. MODAL / OVERLAY DE CONTRASEÑA PARA J.A.R.V.I.S.
+           3. MODALES DE BIENVENIDA, CONTRASEÑA Y ATAJOS
            ========================================================================== */
-        .login-overlay {
+        .welcome-overlay, .login-overlay, .shortcuts-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(5, 0, 2, 0.88);
+            background: rgba(5, 0, 2, 0.92);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 20000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
         }
 
-        .login-box {
+        .welcome-box, .login-box, .shortcuts-box {
             background: var(--hud-bg);
             border: 2px solid var(--hud-orange);
             box-shadow: 0 0 45px var(--hud-glow), inset 0 0 25px rgba(0, 229, 255, 0.2);
-            padding: 35px;
+            padding: 30px;
             border-radius: 12px;
-            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 15px;
             width: 90%;
-            max-width: 380px;
+            max-width: 450px;
         }
 
-        .login-box h2 {
+        .welcome-box h2, .login-box h2, .shortcuts-box h2 {
             font-family: var(--font-tech);
             color: #fff;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             text-shadow: 0 0 10px var(--hud-pink);
+            text-align: center;
         }
 
-        .login-box p { color: var(--hud-text); font-size: 0.9rem; }
+        .welcome-box p, .login-box p { color: var(--hud-text); font-size: 0.9rem; text-align: center; }
 
-        .login-box input {
+        .welcome-box input, .login-box input {
             background: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--hud-pink);
             border-radius: 6px;
@@ -156,19 +156,45 @@
         }
 
         .login-box-actions { display: flex; gap: 10px; }
-        .login-box button {
-            flex: 1;
+        .welcome-box button, .login-box button, .shortcuts-box button {
             background: linear-gradient(135deg, var(--hud-orange), var(--hud-pink));
             border: none;
             color: #fff;
-            padding: 12px;
+            padding: 10px 20px;
             font-family: var(--font-tech);
             font-weight: bold;
             cursor: pointer;
             border-radius: 6px;
             transition: 0.3s;
         }
-        .login-box button.cancel-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); }
+        .login-box button.cancel-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); flex: 1; }
+
+        .shortcuts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        .shortcut-item kbd {
+            background: rgba(0, 229, 255, 0.2);
+            border: 1px solid var(--hud-cyan);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
 
         /* ==========================================================================
            4. MARCO PRINCIPAL HUD (LAYOUT DE 3 COLUMNAS RESPONSIVO)
@@ -229,7 +255,7 @@
             flex-wrap: wrap;
         }
 
-        .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select, .model-select, .history-btn, .sandbox-toggle-btn {
+        .voice-btn, .mic-btn, .reset-btn, .clip-btn, .theme-select, .model-select, .history-btn, .sandbox-toggle-btn, .shortcuts-btn {
             background: rgba(0, 229, 255, 0.18);
             border: 1px solid var(--hud-pink);
             color: #fff;
@@ -251,6 +277,8 @@
 
         .clip-btn { border-color: var(--hud-cyan); background: rgba(0, 255, 204, 0.18); color: #afffe0; }
         .clip-btn:hover { background: rgba(0, 255, 204, 0.35); box-shadow: 0 0 12px var(--hud-cyan); }
+        .shortcuts-btn { border-color: var(--hud-cyan); background: rgba(0, 136, 255, 0.25); color: #fff; }
+        .shortcuts-btn:hover { background: rgba(0, 136, 255, 0.45); box-shadow: 0 0 12px var(--hud-cyan); }
         .reset-btn { border-color: var(--hud-orange); background: rgba(255, 69, 0, 0.2); }
         .voice-btn.active, .mic-btn.active { background: var(--hud-pink); box-shadow: 0 0 12px var(--hud-pink); }
         .mic-btn.active { background: var(--hud-orange); border-color: var(--hud-orange); animation: pulse-mic 1.4s infinite; }
@@ -337,7 +365,6 @@
         .lofi-input-group input { flex: 1; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--hud-pink); border-radius: 4px; color: #fff; padding: 6px; font-size: 0.75rem; outline: none; }
         .lofi-btn { background: rgba(0, 136, 255, 0.25); border: 1px solid var(--hud-orange); color: #fff; padding: 6px 10px; font-family: var(--font-tech); font-size: 0.65rem; border-radius: 4px; cursor: pointer; }
 
-        /* Barras de monitoreo dinámicas avanzadas */
         .monitor-bar-container {
             width: 100%;
             background: rgba(0,0,0,0.6);
@@ -390,7 +417,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Panel Sandbox Ocultable para Ejecución de Código Instantánea */
         .sandbox-panel {
             width: 45%;
             background: rgba(2, 6, 12, 0.95);
@@ -441,6 +467,7 @@
             font-size: 0.75rem;
             color: #fff;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
 
         .chat-messages::-webkit-scrollbar { width: 7px; }
@@ -583,11 +610,21 @@
 </head>
 <body>
 
-    <!-- MODAL DE CONTRASEÑA SOLO PARA J.A.R.V.I.S. -->
+    <!-- MODAL DE REGISTRO / BIENVENIDA INICIAL DE USUARIO -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-box">
+            <h2>INICIALIZACIÓN DEL SISTEMA</h2>
+            <p>Introduce tu nombre para configurar la interfaz P.A.O.:</p>
+            <input type="text" id="usernameInput" placeholder="Tu nombre..." onkeypress="if(event.key === 'Enter') saveUserName()">
+            <button onclick="saveUserName()">CONFIRMAR Y ENTRAR</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONTRASEÑA SOLO PARA J.A.R.V.I.S. (ADMIN) -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <h2>ACCESO ADMINISTRADOR</h2>
-            <p>El protocolo J.A.R.V.I.S. es exclusivo para el administrador. Introduce la contraseña:</p>
+            <p>El protocolo J.A.R.V.I.S. requiere clave de acceso:</p>
             <input type="password" id="adminPasswordInput" placeholder="Contraseña..." onkeypress="if(event.key === 'Enter') verifyAdminPassword()">
             <div class="login-box-actions">
                 <button class="cancel-btn" onclick="cancelJarvisSelection()">CANCELAR</button>
@@ -596,12 +633,28 @@
         </div>
     </div>
 
+    <!-- MODAL / MENÚ DE COMBINACIONES DE TECLAS -->
+    <div class="shortcuts-overlay" id="shortcutsOverlay" onclick="if(event.target === this) toggleShortcutsMenu()">
+        <div class="shortcuts-box">
+            <h2>⚡ COMBINACIONES DE TECLAS</h2>
+            <div class="shortcuts-list">
+                <div class="shortcut-item"><span>Abrir / Cerrar este menú</span> <kbd>Alt + K</kbd></div>
+                <div class="shortcut-item"><span>Leer portapapeles y buscar errores</span> <kbd>Alt + C</kbd></div>
+                <div class="shortcut-item"><span>Crear nueva sesión de chat</span> <kbd>Alt + N</kbd></div>
+                <div class="shortcut-item"><span>Activar reconocimiento de voz</span> <kbd>Alt + M</kbd></div>
+                <div class="shortcut-item"><span>Abrir / Cerrar Sandbox de Código</span> <kbd>Alt + S</kbd></div>
+                <div class="shortcut-item"><span>Enviar mensaje actual</span> <kbd>Enter</kbd></div>
+            </div>
+            <button onclick="toggleShortcutsMenu()" style="width: 100%; margin-top: 5px;">CERRAR MENÚ</button>
+        </div>
+    </div>
+
     <!-- MARCO PRINCIPAL HUD -->
     <div class="hud-frame">
         <!-- CABECERA -->
         <div class="hud-header">
             <div class="hud-title" id="hudTitleText">
-                <span>🛡️</span> P.A.O. // SOLAR OS v6.1
+                <span>🛡️</span> P.A.O. // SOLAR OS v6.3.0
             </div>
             <div class="control-btn-group">
                 <select id="modelSelector" class="model-select" title="Motor de Inteligencia Artificial">
@@ -616,7 +669,8 @@
                     <option value="stark">🔥 Stark Reactor (Público)</option>
                     <option value="jarvis">⚡ J.A.R.V.I.S. Protocol (ADMIN)</option>
                 </select>
-                <button class="sandbox-toggle-btn" onclick="toggleSandbox()" title="Abrir/Cerrar Sandbox de Código">💻 SANDBOX</button>
+                <button class="shortcuts-btn" onclick="toggleShortcutsMenu()" title="Ver Atajos de Teclado [Alt+K]">⌨️ SHORTCUTS</button>
+                <button class="sandbox-toggle-btn" onclick="toggleSandbox()" title="Abrir/Cerrar Sandbox de Código [Alt+S]">💻 SANDBOX</button>
                 <button class="clip-btn" onclick="readClipboardAndAnalyze()" title="Leer portapapeles y buscar errores [Alt+C]">📋 CLIP</button>
                 <button class="history-btn" onclick="createNewChatSession()" title="Crear nueva sesión [Alt+N]">➕ SESIÓN</button>
                 <button class="reset-btn" onclick="resetMemory()" title="Reiniciar memoria y sistema">🗑️</button>
@@ -625,13 +679,13 @@
             </div>
         </div>
 
-        <!-- PANEL IZQUIERDO -->
+        <!-- PANEL IZQUIERDO: PRODUCTIVIDAD & LOGS -->
         <div class="hud-panel-left" id="panelLeft">
             <div class="widget-title">GESTIÓN DE TAREAS & TO-DO</div>
             <div class="stat-box" style="padding: 8px;">
                 <div class="todo-list" id="todoList"></div>
                 <div class="input-group-mini">
-                    <input type="text" id="todoInput" placeholder="Nuevo recordatorio o tarea..." onkeypress="if(event.key === 'Enter') addTodoItem()">
+                    <input type="text" id="todoInput" placeholder="Nueva tarea..." onkeypress="if(event.key === 'Enter') addTodoItem()">
                     <button onclick="addTodoItem()">+</button>
                 </div>
             </div>
@@ -649,7 +703,7 @@
             <div class="stat-box">
                 <div id="liveClock" style="font-family: var(--font-tech); font-size: 0.85rem; color: #fff;">00:00:00</div>
                 <div id="liveWeather" style="font-size: 0.78rem; margin-top: 3px; color: var(--hud-text);">Sincronizando satélite...</div>
-                <div class="terminal-log">SEC_KEY: PUBLIC / ADMIN</div>
+                <div class="terminal-log" id="userLogBadge">USUARIO: DESCONOCIDO</div>
             </div>
 
             <div class="widget-title" style="margin-top: 6px;">REPRODUCTOR MULTIMEDIA</div>
@@ -661,19 +715,19 @@
             </div>
         </div>
 
-        <!-- ÁREA CENTRAL DE CHAT & SANDBOX -->
+        <!-- ÁREA CENTRAL DE CHAT & SANDBOX INTERACTIVO -->
         <div class="hud-chat-main">
             <div class="chat-container-wrapper">
                 <div class="chat-messages" id="messages"></div>
                 
-                <!-- Panel Sandbox Interactivo -->
+                <!-- Sandbox Interactivo de Código (Alt + S) -->
                 <div class="sandbox-panel" id="sandboxPanel">
                     <div class="sandbox-header">
                         <span>⚡ JS / HTML SANDBOX SEGURO</span>
                         <button class="code-btn" onclick="toggleSandbox()">CERRAR [×]</button>
                     </div>
-                    <textarea class="sandbox-editor" id="sandboxCode" placeholder="// Escribe código JavaScript aquí para ejecutarlo en tiempo real...
-console.log('Iniciando entorno P.A.O...');"></textarea>
+                    <textarea class="sandbox-editor" id="sandboxCode" placeholder="// Escribe código JavaScript aquí para probar en tiempo real...
+console.log('Ambiente P.A.O. listo.');"></textarea>
                     <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                         <button class="lofi-btn" style="flex: 1; background: var(--hud-orange);" onclick="executeSandboxCode()">▶ EJECUTAR CÓDIGO</button>
                         <button class="lofi-btn" onclick="document.getElementById('sandboxOutput').innerHTML='&gt; Consola limpia.'">LIMPIAR</button>
@@ -683,14 +737,14 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             </div>
         </div>
 
-        <!-- PANEL DERECHO -->
+        <!-- PANEL DERECHO: ACCESOS RÁPIDOS, BLOC Y DIAGNÓSTICO -->
         <div class="hud-panel-right" id="panelRight">
             <div class="widget-title">SESIONES DE CHAT PERSISTENTES</div>
             <div class="stat-box" style="padding: 8px;">
                 <div class="sessions-list" id="sessionsList"></div>
             </div>
 
-            <div class="widget-title" style="margin-top: 6px;">ACCESOS RÁPIDOS & ENLACES</div>
+            <div class="widget-title" style="margin-top: 6px;">ACCESOS RÁPIDOS (PRODUCTIVIDAD)</div>
             <div class="stat-box">
                 <div class="bookmarks-list" id="bookmarksList"></div>
                 <div class="input-group-mini">
@@ -700,18 +754,18 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                 </div>
             </div>
 
-            <div class="widget-title" style="margin-top: 6px;">BLOC DE NOTAS / BUG HUNTER</div>
+            <div class="widget-title" style="margin-top: 6px;">BUG HUNTER / BLOC RÁPIDO</div>
             <div class="stat-box" style="padding: 8px;">
-                <textarea style="width:100%; height:65px; background:rgba(0,0,0,0.7); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:var(--font-primary); font-size:0.8rem; outline:none; resize:none; border-radius:4px;" id="quickPad" placeholder="Notas de depuración o fragmentos..." oninput="saveQuickPad()"></textarea>
+                <textarea style="width:100%; height:65px; background:rgba(0,0,0,0.7); border:1px solid var(--hud-pink); color:var(--hud-text); padding:6px; font-family:var(--font-primary); font-size:0.8rem; outline:none; resize:none; border-radius:4px;" id="quickPad" placeholder="Notas de depuración o código temporal..." oninput="saveQuickPad()"></textarea>
                 <div style="display: flex; gap: 4px; margin-top: 5px;">
                     <button class="lofi-btn" style="flex:1;" onclick="analyzePadContent()">ANALIZAR</button>
                     <button class="lofi-btn" style="background: rgba(255,69,0,0.25);" onclick="document.getElementById('quickPad').value=''; saveQuickPad();">LIMPIAR</button>
                 </div>
             </div>
 
-            <div class="widget-title" style="margin-top: 6px;">DIAGNÓSTICO & RENDIMIENTO</div>
+            <div class="widget-title" style="margin-top: 6px;">DIAGNÓSTICO Y RENDIMIENTO</div>
             <div class="stat-box">
-                <div style="font-size: 0.75rem; display: flex; justify-content: space-between;"><span>CPU USAGE:</span> <span id="cpuVal" style="color: var(--hud-cyan);">24.2%</span></div>
+                <div style="font-size: 0.75rem; display: flex; justify-content: space-between;"><span>USO DE CPU:</span> <span id="cpuVal" style="color: var(--hud-cyan);">24.2%</span></div>
                 <div class="monitor-bar-container"><div class="monitor-bar-fill" id="cpuBar"></div></div>
 
                 <div style="font-size: 0.75rem; display: flex; justify-content: space-between; margin-top: 6px;"><span>TRÁFICO RED:</span> <span id="netVal" style="color: var(--hud-cyan);">1.4 MB/s</span></div>
@@ -719,15 +773,16 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             </div>
         </div>
 
-        <!-- BARRA INFERIOR / ENTRADA -->
+        <!-- BARRA INFERIOR / ENTRADA DE COMANDOS -->
         <div class="hud-input-bar">
-            <input type="text" id="userInput" placeholder="Introduce comandos, consultas, traducciones o fragmentos de código..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <input type="text" id="userInput" placeholder="Introduce comandos, consultas o fragmentos de código..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()">EJECUTAR</button>
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL DE CONTROL E INTEGRACIÓN DE MÓDULOS -->
+    <!-- SCRIPT PRINCIPAL DE CONTROL E INTEGRACIÓN -->
     <script>
+        let currentUserName = "";
         let sessions = [];
         let currentSessionId = null;
         let history = [];
@@ -755,6 +810,8 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                 window.speechSynthesis.onvoiceschanged = loadVoices;
             }
 
+            checkUserIdentity();
+
             const savedTheme = localStorage.getItem('pao_theme') || 'cosmic';
             previousTheme = savedTheme === 'jarvis' ? 'cosmic' : savedTheme;
             applyTheme(savedTheme, false);
@@ -773,8 +830,6 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
 
             if (sessions.length === 0) {
                 createNewChatSession(false);
-                const welcomeText = "¡Bienvenido al sistema público P.A.O.! Los temas Cosmic, Matrix y Stark están disponibles para todo público.";
-                appendMessage('assistant', welcomeText, true, true);
             } else {
                 loadSession(sessions[0].id);
             }
@@ -784,6 +839,39 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             setupGlobalHotkeys();
         });
 
+        // Verificación de Identidad al Inicio
+        function checkUserIdentity() {
+            const storedName = localStorage.getItem('pao_username');
+            if (!storedName) {
+                document.getElementById('welcomeOverlay').style.display = 'flex';
+                document.getElementById('usernameInput').focus();
+            } else {
+                currentUserName = storedName;
+                updateUserBadge();
+            }
+        }
+
+        function saveUserName() {
+            const inputName = document.getElementById('usernameInput').value.trim();
+            if (!inputName) return alert("Por favor introduce tu nombre.");
+            
+            currentUserName = inputName;
+            localStorage.setItem('pao_username', currentUserName);
+            document.getElementById('welcomeOverlay').style.display = 'none';
+            updateUserBadge();
+            playSciFiBeep(1200);
+
+            const welcomeText = `¡Bienvenido ${currentUserName}! Sistema P.A.O. v6.3.0 listo para asistirte.`;
+            appendMessage('assistant', welcomeText, false, true);
+            speakText(welcomeText);
+        }
+
+        function updateUserBadge() {
+            const badge = document.getElementById('userLogBadge');
+            if (badge) badge.innerText = `USUARIO: ${currentUserName.toUpperCase()}`;
+        }
+
+        // Configuración de Teclas Rápidas
         function setupGlobalHotkeys() {
             window.addEventListener('keydown', (e) => {
                 if (e.altKey && e.key.toLowerCase() === 'c') {
@@ -798,16 +886,29 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                 } else if (e.altKey && e.key.toLowerCase() === 's') {
                     e.preventDefault();
                     toggleSandbox();
+                } else if (e.altKey && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    toggleShortcutsMenu();
                 }
             });
         }
 
+        function toggleShortcutsMenu() {
+            playSciFiBeep(1100);
+            const overlay = document.getElementById('shortcutsOverlay');
+            overlay.style.display = (overlay.style.display === 'flex') ? 'none' : 'flex';
+        }
+
         function initAudioContext() {
-            window.addEventListener('click', () => {
+            const unlockAudio = () => {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                } else if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
                 }
-            }, { once: true });
+            };
+            window.addEventListener('click', unlockAudio, { once: true });
+            window.addEventListener('keydown', unlockAudio, { once: true });
         }
 
         function playSciFiBeep(freq = 800, type = 'sine', duration = 0.05) {
@@ -835,22 +936,22 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
 
                 if (!cpuValEl || !cpuBarEl) return;
 
-                const randomCpu = (Math.random() * 35 + 15).toFixed(1);
-                const randomNet = (Math.random() * 3.8 + 0.5).toFixed(1);
+                const randomCpu = (Math.random() * 28 + 12).toFixed(1);
+                const randomNet = (Math.random() * 2.5 + 0.4).toFixed(1);
 
                 cpuValEl.innerText = randomCpu + '%';
                 cpuBarEl.style.width = randomCpu + '%';
 
                 netValEl.innerText = randomNet + ' MB/s';
-                netBarEl.style.width = (randomNet * 22) + '%';
-            }, 1500);
+                netBarEl.style.width = Math.min(randomNet * 25, 100) + '%';
+            }, 2000);
         }
 
         function getTodoList() {
             const data = localStorage.getItem('pao_todos');
             return data ? JSON.parse(data) : [
-                { text: "Explorar temas públicos del sistema", completed: false },
-                { text: "Acceso exclusivo a J.A.R.V.I.S. con contraseña", completed: true }
+                { text: "Revisar entregables de química", completed: false },
+                { text: "Prueba de compilación de código JS", completed: true }
             ];
         }
 
@@ -861,10 +962,15 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             listEl.innerHTML = '';
             todos.forEach((item, index) => {
                 const checkedClass = item.completed ? 'completed' : '';
-                listEl.innerHTML += `<div class="todo-item ${checkedClass}">
-                    <span onclick="toggleTodoItem(${index})" style="cursor:pointer; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☑ ${item.text}</span>
-                    <button class="item-delete" onclick="removeTodoItem(${index})">×</button>
-                </div>`;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `todo-item ${checkedClass}`;
+                itemDiv.innerHTML = `
+                    <span style="cursor:pointer; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☑ ${escapeHTML(item.text)}</span>
+                    <button class="item-delete">×</button>`;
+                
+                itemDiv.querySelector('span').onclick = () => toggleTodoItem(index);
+                itemDiv.querySelector('.item-delete').onclick = () => removeTodoItem(index);
+                listEl.appendChild(itemDiv);
             });
         }
 
@@ -913,11 +1019,20 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             if (!listEl) return;
             listEl.innerHTML = '';
             sessions.forEach(s => {
-                let activeStyle = s.id === currentSessionId ? 'border-color: var(--hud-orange); background: rgba(0,136,255,0.25);' : '';
-                listEl.innerHTML += `<div class="session-item" style="${activeStyle}" onclick="loadSession('${s.id}')">
-                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:145px;">📁 ${s.title}</span>
-                    <button class="session-delete" onclick="event.stopPropagation(); deleteSession('${s.id}')">×</button>
-                </div>`;
+                const activeStyle = s.id === currentSessionId ? 'border-color: var(--hud-orange); background: rgba(0,136,255,0.25);' : '';
+                const sessDiv = document.createElement('div');
+                sessDiv.className = 'session-item';
+                sessDiv.style.cssText = activeStyle;
+                sessDiv.innerHTML = `
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:145px;">📁 ${escapeHTML(s.title)}</span>
+                    <button class="session-delete">×</button>`;
+                
+                sessDiv.onclick = () => loadSession(s.id);
+                sessDiv.querySelector('.session-delete').onclick = (e) => {
+                    e.stopPropagation();
+                    deleteSession(s.id);
+                };
+                listEl.appendChild(sessDiv);
             });
         }
 
@@ -931,8 +1046,8 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
 
             if (welcome) {
                 const currentTheme = localStorage.getItem('pao_theme');
-                let welcomeText = "Nueva sesión abierta. ¿En qué te ayudo?";
-                if (currentTheme === 'jarvis') welcomeText = "Sesión táctica inicializada, señor Gabriel. Enlace seguro activo.";
+                let welcomeText = `Nueva sesión inicializada, ${currentUserName || 'usuario'}. ¿Qué consulta o código deseas procesar?`;
+                if (currentTheme === 'jarvis') welcomeText = "Sesión de administrador activa. Protocolos de seguridad listos, Señor Gabriel.";
                 
                 appendMessage('assistant', welcomeText, false, false);
                 speakText(welcomeText);
@@ -957,9 +1072,6 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             else if (currentSessionId === id) loadSession(sessions[0].id);
         }
 
-        /* ==========================================================================
-           CONTROL DE TEMAS Y PROTECCIÓN DE J.A.R.V.I.S. (SOLO ADMIN)
-           ========================================================================== */
         function handleThemeSelection(selectEl) {
             const themeName = selectEl.value;
 
@@ -988,7 +1100,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                 document.getElementById('loginOverlay').style.display = 'none';
                 applyTheme('jarvis', true);
             } else {
-                alert("Contraseña incorrecta. Acceso denegado a J.A.R.V.I.S.");
+                alert("Contraseña incorrecta. Acceso restringido.");
                 cancelJarvisSelection();
             }
         }
@@ -999,6 +1111,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             document.getElementById('themeSelector').value = previousTheme;
         }
 
+        // Aplicación del Tema con Saludo Específico "Señor Gabriel" para J.A.R.V.I.S.
         function applyTheme(themeName, speak = true) {
             const titleElement = document.getElementById('hudTitleText');
             const selector = document.getElementById('themeSelector');
@@ -1009,28 +1122,26 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                 document.documentElement.setAttribute('data-theme', 'jarvis');
                 titleElement.innerHTML = "<span>⚡</span> J.A.R.V.I.S. // ADMIN PROTOCOL";
                 configureJarvisVoiceStyle();
-                const welcomeMsg = "Bienvenido, señor Gabriel. Protocolo J.A.R.V.I.S. activado.";
+                const welcomeMsg = "Bienvenido, Señor Gabriel. Todos los sistemas del protocolo J.A.R.V.I.S. están a su disposición.";
                 if (speak) {
                     appendMessage('assistant', welcomeMsg, false, false);
                     speakText(welcomeMsg);
                 }
             } else if (themeName === 'matrix') {
-                document.documentElement.removeAttribute('data-theme');
                 document.documentElement.setAttribute('data-theme', 'matrix');
                 titleElement.innerHTML = "<span>💻</span> MATRIX // TERMINAL";
                 loadVoices();
-                if (speak) speakText("Terminal Matrix en línea.");
+                if (speak) speakText(`Terminal Matrix activa. Saludos, ${currentUserName || 'usuario'}.`);
             } else if (themeName === 'stark') {
-                document.documentElement.removeAttribute('data-theme');
                 document.documentElement.setAttribute('data-theme', 'stark');
                 titleElement.innerHTML = "<span>🔥</span> STARK // REACTOR";
                 loadVoices();
-                if (speak) speakText("Reactor Stark activado.");
+                if (speak) speakText(`Reactor Stark activado. Listo, ${currentUserName || 'usuario'}.`);
             } else {
                 document.documentElement.removeAttribute('data-theme');
-                titleElement.innerHTML = "<span>🛡️</span> P.A.O. // SOLAR OS v6.1";
+                titleElement.innerHTML = "<span>🛡️</span> P.A.O. // SOLAR OS v6.3.0";
                 loadVoices();
-                if (speak) speakText("Modo Cosmic activado.");
+                if (speak) speakText(`Modo Cosmic activado. Saludos, ${currentUserName || 'usuario'}.`);
             }
         }
 
@@ -1044,21 +1155,21 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             playSciFiBeep(1300);
             const code = document.getElementById('sandboxCode').value;
             const outputDiv = document.getElementById('sandboxOutput');
-            outputDiv.innerHTML = "";
+            outputDiv.innerText = "";
 
             const originalLog = console.log;
             let logs = [];
             console.log = function(...args) {
-                logs.push(args.join(' '));
+                logs.push(args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' '));
                 originalLog.apply(console, args);
             };
 
             try {
                 let result = eval(code);
-                if (result !== undefined) logs.push(`=> ${result}`);
-                outputDiv.innerHTML = `<span style="color:#00ffcc;">> Ejecución exitosa:</span>\n` + logs.join('\n');
+                if (result !== undefined) logs.push(`=> ${typeof result === 'object' ? JSON.stringify(result) : result}`);
+                outputDiv.innerText = `> Ejecución exitosa:\n` + logs.join('\n');
             } catch (err) {
-                outputDiv.innerHTML = `<span style="color:#ff3300;">> Error de ejecución:</span>\n${err.message}`;
+                outputDiv.innerText = `> Error de ejecución:\n${err.message}`;
             } finally {
                 console.log = originalLog;
             }
@@ -1069,10 +1180,10 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             try {
                 const text = await navigator.clipboard.readText();
                 if (!text.trim()) return alert("El portapapeles está vacío.");
-                document.getElementById('userInput').value = `Analiza y busca errores en el siguiente código/texto:\n\`\`\`\n${text}\n\`\`\``;
+                document.getElementById('userInput').value = `Analiza y depura este fragmento de código/texto:\n\`\`\`\n${text}\n\`\`\``;
                 document.getElementById('userInput').focus();
             } catch (err) {
-                alert("Permiso de portapapeles denegado por el navegador.");
+                alert("Permiso denegado para acceder al portapapeles.");
             }
         }
 
@@ -1081,7 +1192,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             const codeEl = btn.parentElement.nextElementSibling;
             const codeText = codeEl.innerText;
             
-            let filename = prompt("Introduce el nombre para el archivo corregido:", `codigo_corregido.${ext}`);
+            let filename = prompt("Ingresa el nombre del archivo:", `script_corregido.${ext}`);
             if (!filename) return;
 
             const blob = new Blob([codeText], { type: 'text/plain;charset=utf-8' });
@@ -1099,7 +1210,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             playSciFiBeep(1050);
             const padContent = document.getElementById('quickPad').value.trim();
             if (!padContent) return alert("El bloc de notas está vacío.");
-            document.getElementById('userInput').value = `Revisa detalladamente este bloque de notas y optimízalo:\n\`\`\`\n${padContent}\n\`\`\``;
+            document.getElementById('userInput').value = `Revisa y optimiza las siguientes notas o fragmento de código:\n\`\`\`\n${padContent}\n\`\`\``;
             document.getElementById('userInput').focus();
         }
 
@@ -1114,10 +1225,14 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             if (!listDiv) return;
             listDiv.innerHTML = '';
             bms.forEach((bm, index) => {
-                listDiv.innerHTML += `<div class="bookmark-item">
-                    <a href="${bm.url}" target="_blank" style="color:var(--hud-text); text-decoration:none; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📌 ${bm.name}</a>
-                    <button class="bm-delete" onclick="removeBookmark(${index})">×</button>
-                </div>`;
+                const bmDiv = document.createElement('div');
+                bmDiv.className = 'bookmark-item';
+                bmDiv.innerHTML = `
+                    <a href="${escapeHTML(bm.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--hud-text); text-decoration:none; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📌 ${escapeHTML(bm.name)}</a>
+                    <button class="bm-delete">×</button>`;
+                
+                bmDiv.querySelector('.bm-delete').onclick = () => removeBookmark(index);
+                listDiv.appendChild(bmDiv);
             });
         }
 
@@ -1125,7 +1240,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
             playSciFiBeep(950);
             const name = document.getElementById('bmName').value.trim();
             let url = document.getElementById('bmUrl').value.trim();
-            if (!name || !url) return alert("Rellena nombre y URL.");
+            if (!name || !url) return alert("Ingresa un nombre y una URL válida.");
             if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
 
             let bms = getBookmarks();
@@ -1147,7 +1262,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
         function playAnySong(songName) {
             if (!songName) return;
             window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}`, '_blank');
-            const replyText = `Reproduciendo "${songName}". 🎶`;
+            const replyText = `Buscando "${songName}". 🎶`;
             appendMessage('assistant', replyText, false, false);
             speakText(replyText);
         }
@@ -1380,7 +1495,8 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
                         message: text, 
                         history: history.slice(-12),
                         model: selectedModel,
-                        personality: currentTheme
+                        personality: currentTheme,
+                        user_name: currentUserName
                     })
                 });
 
@@ -1420,7 +1536,7 @@ console.log('Iniciando entorno P.A.O...');"></textarea>
 
         function toggleMic() {
             playSciFiBeep(900);
-            if (!recognition) return alert('Reconocimiento de voz no soportado en este navegador.');
+            if (!recognition) return alert('Reconocimiento de voz no disponible en el navegador.');
             
             if (isListening) {
                 try { recognition.stop(); } catch(e){}
